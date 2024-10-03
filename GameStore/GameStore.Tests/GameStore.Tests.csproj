@@ -21,4 +21,10 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GameStore.Core\GameStore.Core.csproj" />
+    <ProjectReference Include="..\GameStore.Infraestructure\GameStore.Infraestructure.csproj" />
+    <ProjectReference Include="..\GameStore.Api\GameStore.Api.csproj" />
+  </ItemGroup>
+
 </Project>
