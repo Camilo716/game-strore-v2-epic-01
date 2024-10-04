@@ -1,5 +1,5 @@
 variables:
-  PROJECT_NAME: 'Gamestore'
+  PROJECT_NAME: 'GameStore'
 
 test:
   image: mcr.microsoft.com/dotnet/sdk:6.0
