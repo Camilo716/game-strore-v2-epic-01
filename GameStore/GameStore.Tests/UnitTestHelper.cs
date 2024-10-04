@@ -1,5 +1,5 @@
-using GameStore.Core.Models;
 using GameStore.Infraestructure.Data;
+using GameStore.Tests.Seed;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Tests;
@@ -20,8 +20,7 @@ internal static class UnitTestHelper
 
     private static void SeedData(GameStoreContext context)
     {
-        context.Platforms.AddRange(
-            new Platform { Id = 1 });
+        context.Platforms.AddRange(PlatformSeed.Platforms);
 
         context.SaveChanges();
     }
