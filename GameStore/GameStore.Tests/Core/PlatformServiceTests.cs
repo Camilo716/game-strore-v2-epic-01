@@ -13,7 +13,7 @@ public class PlatformServiceTests
         var mockUnitOfWork = new Mock<IUnitOfWork>();
 
         mockUnitOfWork.Setup(m => m.PlatformRepository.GetByIdAsync(It.IsAny<int>()))
-            .ReturnsAsync(PlatformSeed.Platforms.First());
+            .ReturnsAsync(PlatformSeed.GetPlatforms().First());
 
         var platformService = new PlatformService(mockUnitOfWork.Object);
 

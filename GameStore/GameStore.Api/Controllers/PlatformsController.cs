@@ -16,6 +16,6 @@ public class PlatformsController(IPlatformService platformService)
     {
         var platform = await _platformService.GetByIdAsync(id);
 
-        return Ok(platform);
+        return platform is null ? NotFound() : Ok(platform);
     }
 }

@@ -212,3 +212,6 @@ dotnet_analyzer_diagnostic.severity = error
 # Ignore paths
 [/*.Tests/**]
 dotnet_diagnostic.CA1707.severity = none
+
+[*/Migrations/*.cs]
+generated_code = true

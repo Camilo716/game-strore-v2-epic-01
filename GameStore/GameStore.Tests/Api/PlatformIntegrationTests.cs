@@ -1,8 +1,8 @@
+using System.Net;
+
 namespace GameStore.Tests.Api;
 
-public class PlatformIntegrationTests(CustomWebApplicationFactory factory)
-    : IClassFixture<CustomWebApplicationFactory>,
-    IDisposable
+public class PlatformIntegrationTests(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory = factory;
 
@@ -16,9 +16,13 @@ public class PlatformIntegrationTests(CustomWebApplicationFactory factory)
         response.EnsureSuccessStatusCode();
     }
 
-    public void Dispose()
+    [Fact]
+    public async Task GetByIdWithInvalidIdReturnsNotFound()
     {
-        GC.SuppressFinalize(this);
-        _factory.Dispose();
+        using var client = _factory.CreateClient();
+
+        var response = await client.GetAsync("api/platforms/-1");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 }

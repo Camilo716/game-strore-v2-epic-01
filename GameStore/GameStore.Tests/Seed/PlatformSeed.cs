@@ -4,11 +4,14 @@ namespace GameStore.Tests.Seed;
 
 public static class PlatformSeed
 {
-    public static List<Platform> Platforms =>
+    public static List<Platform> GetPlatforms(bool includeIds = true)
+    {
+        return
         [
-            new() { Id = 1, Type = "Mobile" },
-            new() { Id = 2, Type = "Browser" },
-            new() { Id = 3, Type = "Desktop" },
-            new() { Id = 4, Type = "Console" },
+            new() { Id = includeIds ? 1 : default, Type = "Mobile" },
+            new() { Id = includeIds ? 2 : default, Type = "Browser" },
+            new() { Id = includeIds ? 3 : default, Type = "Desktop" },
+            new() { Id = includeIds ? 4 : default, Type = "Console" },
         ];
+    }
 }
