@@ -13,15 +13,8 @@ internal static class UnitTestHelper
             .Options;
 
         using var context = new GameStoreContext(options);
-        SeedData(context);
+        DbSeeder.SeedData(context);
 
         return options!;
-    }
-
-    private static void SeedData(GameStoreContext context)
-    {
-        context.Platforms.AddRange(PlatformSeed.Platforms);
-
-        context.SaveChanges();
     }
 }

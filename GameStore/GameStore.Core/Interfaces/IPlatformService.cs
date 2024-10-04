@@ -1,0 +1,8 @@
+using GameStore.Core.Models;
+
+namespace GameStore.Core.Interfaces;
+
+public interface IPlatformService
+{
+    public Task<Platform> GetByIdAsync(int id);
+}

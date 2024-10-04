@@ -3,7 +3,7 @@ using GameStore.Core.Models;
 
 namespace GameStore.Core.Services;
 
-public class PlatformService(IUnitOfWork unitOfWork)
+public class PlatformService(IUnitOfWork unitOfWork) : IPlatformService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
