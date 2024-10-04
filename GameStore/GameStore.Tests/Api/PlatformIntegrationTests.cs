@@ -2,7 +2,8 @@ using System.Net;
 
 namespace GameStore.Tests.Api;
 
-public class PlatformIntegrationTests(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class PlatformIntegrationTests(CustomWebApplicationFactory factory)
+    : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory = factory;
 

@@ -16,7 +16,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Startup>
         {
             RemoveDbContextServiceRegistration(services);
 
-            services.AddDbContext<GameStoreContext>(options =>
+            services.AddDbContext<GameStoreDbContext>(options =>
             {
                 options.UseInMemoryDatabase(Guid.NewGuid().ToString());
             });
@@ -28,7 +28,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Startup>
     private static void RemoveDbContextServiceRegistration(IServiceCollection services)
     {
         var dbContextDescriptor = services.SingleOrDefault(
-            d => d.ServiceType == typeof(GameStoreContext));
+            d => d.ServiceType == typeof(GameStoreDbContext));
 
         if (dbContextDescriptor is not null)
         {
@@ -39,7 +39,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Startup>
     private static void SeedData(IServiceCollection services)
     {
         using var scope = services.BuildServiceProvider().CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
+        var context = scope.ServiceProvider.GetRequiredService<GameStoreDbContext>();
         DbSeeder.SeedData(context);
     }
 }

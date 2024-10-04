@@ -4,9 +4,9 @@ using GameStore.Infraestructure.Data;
 
 namespace GameStore.Infraestructure.Repositories;
 
-public class PlatformRepository(GameStoreContext dbContext) : IPlatformRepository
+public class PlatformRepository(GameStoreDbContext dbContext) : IPlatformRepository
 {
-    private readonly GameStoreContext _dbContext = dbContext;
+    private readonly GameStoreDbContext _dbContext = dbContext;
 
     public async Task<Platform> GetByIdAsync(int id)
     {

@@ -9,7 +9,7 @@ public static class Dependences
 {
     public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
     {
-        services.AddDbContext<GameStoreContext>(opt =>
+        services.AddDbContext<GameStoreDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
     }
 }

@@ -8,7 +8,7 @@ public class PlatformRepositoryTests
     [Fact]
     public async Task PlatformRepository_GetById_ReturnsSingleValue()
     {
-        var dbContext = new GameStoreContext(UnitTestHelper.GetUnitTestDbOptions());
+        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
         var platformRepository = new PlatformRepository(dbContext);
 
         var platform = await platformRepository.GetByIdAsync(1);

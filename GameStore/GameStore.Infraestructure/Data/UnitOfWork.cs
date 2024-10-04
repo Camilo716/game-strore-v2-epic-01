@@ -3,9 +3,9 @@ using GameStore.Infraestructure.Repositories;
 
 namespace GameStore.Infraestructure.Data;
 
-public class UnitOfWork(GameStoreContext dbContext) : IUnitOfWork
+public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
 {
-    private readonly GameStoreContext _dbContext = dbContext;
+    private readonly GameStoreDbContext _dbContext = dbContext;
 
     private IPlatformRepository _platformRepository;
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Infraestructure.Data;
 
-public class GameStoreContext(DbContextOptions options) : DbContext(options)
+public class GameStoreDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Platform> Platforms { get; set; }
 

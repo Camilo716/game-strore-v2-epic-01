@@ -16,7 +16,7 @@ public class Startup(IConfiguration configuration)
 
         services.AddControllers();
 
-        services.AddDbContext<GameStoreContext>(
+        services.AddDbContext<GameStoreDbContext>(
             opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();

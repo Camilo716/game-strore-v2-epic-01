@@ -4,7 +4,7 @@ namespace GameStore.Tests.Seed;
 
 internal class DbSeeder
 {
-    internal static void SeedData(GameStoreContext context)
+    internal static void SeedData(GameStoreDbContext context)
     {
         context.Platforms.AddRange(PlatformSeed.GetPlatforms(includeIds: false));
 
