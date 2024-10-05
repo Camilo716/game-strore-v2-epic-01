@@ -12,12 +12,12 @@ public class PlatformServiceTests
     {
         var mockUnitOfWork = new Mock<IUnitOfWork>();
 
-        mockUnitOfWork.Setup(m => m.PlatformRepository.GetByIdAsync(It.IsAny<int>()))
+        mockUnitOfWork.Setup(m => m.PlatformRepository.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(PlatformSeed.GetPlatforms().First());
 
         var platformService = new PlatformService(mockUnitOfWork.Object);
 
-        int id = 1;
+        Guid id = PlatformSeed.GetPlatforms().First().Id;
 
         var platform = await platformService.GetByIdAsync(id);
 

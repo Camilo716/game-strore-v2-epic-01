@@ -6,7 +6,7 @@ internal class DbSeeder
 {
     internal static void SeedData(GameStoreDbContext context)
     {
-        context.Platforms.AddRange(PlatformSeed.GetPlatforms(includeIds: false));
+        context.Platforms.AddRange(PlatformSeed.GetPlatforms());
 
         context.SaveChanges();
     }

@@ -4,5 +4,5 @@ namespace GameStore.Core.Interfaces;
 
 public interface IPlatformRepository
 {
-    public Task<Platform> GetByIdAsync(int id);
+    public Task<Platform> GetByIdAsync(Guid id);
 }

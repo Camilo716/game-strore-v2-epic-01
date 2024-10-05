@@ -1,5 +1,6 @@
 using GameStore.Infraestructure.Data;
 using GameStore.Infraestructure.Repositories;
+using GameStore.Tests.Seed;
 
 namespace GameStore.Tests.Infraestructure;
 
@@ -10,10 +11,11 @@ public class PlatformRepositoryTests
     {
         var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
         var platformRepository = new PlatformRepository(dbContext);
+        Guid id = PlatformSeed.GetPlatforms().First().Id;
 
-        var platform = await platformRepository.GetByIdAsync(1);
+        var platform = await platformRepository.GetByIdAsync(id);
 
         Assert.NotNull(platform);
-        Assert.Equal(1, platform.Id);
+        Assert.Equal(id, platform.Id);
     }
 }

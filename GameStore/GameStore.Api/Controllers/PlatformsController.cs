@@ -11,8 +11,9 @@ public class PlatformsController(IPlatformService platformService)
 {
     private readonly IPlatformService _platformService = platformService;
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Platform>> GetByIdAsync([FromRoute] int id)
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<ActionResult<Platform>> GetByIdAsync([FromRoute] Guid id)
     {
         var platform = await _platformService.GetByIdAsync(id);
 

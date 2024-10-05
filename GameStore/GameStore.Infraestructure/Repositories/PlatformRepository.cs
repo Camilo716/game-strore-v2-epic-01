@@ -8,7 +8,7 @@ public class PlatformRepository(GameStoreDbContext dbContext) : IPlatformReposit
 {
     private readonly GameStoreDbContext _dbContext = dbContext;
 
-    public async Task<Platform> GetByIdAsync(int id)
+    public async Task<Platform> GetByIdAsync(Guid id)
     {
         return await _dbContext.Platforms.FindAsync(id);
     }
