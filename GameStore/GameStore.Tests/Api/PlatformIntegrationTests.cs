@@ -1,49 +1,25 @@
 using System.Net;
-using GameStore.Infraestructure.Data;
 using GameStore.Tests.Seed;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GameStore.Tests.Api;
 
-public class PlatformIntegrationTests : IDisposable
+public class PlatformIntegrationTests : BaseIntegrationTest
 {
-    private readonly CustomWebApplicationFactory _factory;
-    private readonly HttpClient _httpClient;
-
-    public PlatformIntegrationTests()
-    {
-        _factory = new CustomWebApplicationFactory();
-        _httpClient = _factory.CreateClient();
-
-        using var scope = _factory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetRequiredService<GameStoreDbContext>();
-        DbSeeder.SeedData(context);
-    }
-
     [Fact]
-    public async Task GetByIdReturnsSuccess()
+    public async Task GetById_GivenValidId_ReturnsSuccess()
     {
         Guid id = PlatformSeed.GetPlatforms().First().Id;
 
-        var response = await _httpClient.GetAsync($"api/platforms/{id}");
+        var response = await HttpClient.GetAsync($"api/platforms/{id}");
 
         response.EnsureSuccessStatusCode();
     }
 
     [Fact]
-    public async Task GetByIdWithInvalidIdReturnsNotFound()
+    public async Task GetById_GivenInvalidId_ReturnsNotFound()
     {
-        using var client = _factory.CreateClient();
-
-        var response = await client.GetAsync("api/platforms/-1");
+        var response = await HttpClient.GetAsync("api/platforms/-1");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    }
-
-    public void Dispose()
-    {
-        _factory.Dispose();
-        _httpClient.Dispose();
-        GC.SuppressFinalize(this);
     }
 }

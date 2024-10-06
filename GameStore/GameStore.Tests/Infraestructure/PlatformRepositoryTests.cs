@@ -7,7 +7,7 @@ namespace GameStore.Tests.Infraestructure;
 public class PlatformRepositoryTests
 {
     [Fact]
-    public async Task PlatformRepository_GetById_ReturnsSingleValue()
+    public async Task GetById_GivenValidId_ReturnsPlatformInDatabase()
     {
         var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
         var platformRepository = new PlatformRepository(dbContext);

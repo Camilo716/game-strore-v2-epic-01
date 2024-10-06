@@ -8,7 +8,7 @@ namespace GameStore.Tests.Core;
 public class PlatformServiceTests
 {
     [Fact]
-    public async Task GetByIdReturnsPlatformModel()
+    public async Task GetById_GivenValidId_ReturnsPlatformModel()
     {
         var mockUnitOfWork = new Mock<IUnitOfWork>();
 
