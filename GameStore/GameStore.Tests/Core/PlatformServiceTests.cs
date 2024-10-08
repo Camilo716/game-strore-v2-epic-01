@@ -1,4 +1,5 @@
 using GameStore.Core.Interfaces;
+using GameStore.Core.Models;
 using GameStore.Core.Services;
 using GameStore.Tests.Seed;
 using Moq;
@@ -54,5 +55,21 @@ public class PlatformServiceTests
         await platformService.DeleteAsync(id);
 
         mockUnitOfWork.Verify(m => m.PlatformRepository.DeleteByIdAsync(id), Times.Once());
+    }
+
+    [Fact]
+    public async Task Create_GivenValidPlatform_CreatesPlatform()
+    {
+        var mockUnitOfWork = new Mock<IUnitOfWork>();
+        mockUnitOfWork.Setup(m => m.PlatformRepository.InsertAsync(It.IsAny<Platform>()));
+        var validPlatform = new Platform() { Type = "Virtual Reality" };
+
+        var platformService = new PlatformService(mockUnitOfWork.Object);
+
+        await platformService.CreateAsync(validPlatform);
+
+        mockUnitOfWork.Verify(
+            m => m.PlatformRepository.InsertAsync(It.Is<Platform>(p => p.Type == validPlatform.Type)),
+            Times.Once());
     }
 }

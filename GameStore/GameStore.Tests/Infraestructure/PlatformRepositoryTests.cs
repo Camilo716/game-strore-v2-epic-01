@@ -1,3 +1,4 @@
+using GameStore.Core.Models;
 using GameStore.Infraestructure.Data;
 using GameStore.Infraestructure.Repositories;
 using GameStore.Tests.Seed;
@@ -28,7 +29,7 @@ public class PlatformRepositoryTests
         var platform = await platformRepository.GetAllAsync();
 
         Assert.NotNull(platform);
-        Assert.Equal(platform.Count(), PlatformSeed.GetPlatforms().Count);
+        Assert.Equal(PlatformSeed.GetPlatforms().Count, platform.Count());
     }
 
     [Fact]
@@ -41,6 +42,19 @@ public class PlatformRepositoryTests
         await unitOfWork.PlatformRepository.DeleteByIdAsync(id);
         await unitOfWork.SaveChangesAsync();
 
-        Assert.Equal(dbContext.Platforms.Count(), PlatformSeed.GetPlatforms().Count - 1);
+        Assert.Equal(PlatformSeed.GetPlatforms().Count - 1, dbContext.Platforms.Count());
+    }
+
+    [Fact]
+    public async Task Insert_GivenValidPlatform_InsertsPlatformInDatabase()
+    {
+        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        var unitOfWork = new UnitOfWork(dbContext);
+        var validPlatform = new Platform() { Type = "Virtual Reality" };
+
+        await unitOfWork.PlatformRepository.InsertAsync(validPlatform);
+        await unitOfWork.SaveChangesAsync();
+
+        Assert.Equal(PlatformSeed.GetPlatforms().Count + 1, dbContext.Platforms.Count());
     }
 }

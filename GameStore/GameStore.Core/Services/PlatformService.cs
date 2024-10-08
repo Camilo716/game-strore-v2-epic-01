@@ -22,4 +22,10 @@ public class PlatformService(IUnitOfWork unitOfWork) : IPlatformService
         await _unitOfWork.PlatformRepository.DeleteByIdAsync(id);
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task CreateAsync(Platform platform)
+    {
+        await _unitOfWork.PlatformRepository.InsertAsync(platform);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

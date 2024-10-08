@@ -1,4 +1,6 @@
 using System.Net;
+using System.Net.Http.Json;
+using GameStore.Api.Dtos;
 using GameStore.Core.Models;
 using GameStore.Tests.Seed;
 using Newtonsoft.Json;
@@ -44,7 +46,21 @@ public class PlatformIntegrationTests : BaseIntegrationTest
         var response = await HttpClient.DeleteAsync($"api/platforms/{id}");
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-        Assert.Equal(DbContext.Platforms.Count(), PlatformSeed.GetPlatforms().Count - 1);
+        Assert.Equal(PlatformSeed.GetPlatforms().Count - 1, DbContext.Platforms.Count());
+    }
+
+    [Fact]
+    public async Task Post_GivenValidPlatform_CreatePlatform()
+    {
+        var validPlatform = new PlatformCreationDto()
+        {
+            Platform = new Platform() { Type = "Virtual Reality" },
+        };
+
+        var response = await HttpClient.PostAsJsonAsync("api/platforms", validPlatform);
+
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(PlatformSeed.GetPlatforms().Count + 1, DbContext.Platforms.Count());
     }
 
     private static async Task<T> GetModelFromHttpResponse<T>(HttpResponseMessage response)

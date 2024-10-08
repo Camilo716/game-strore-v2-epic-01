@@ -26,4 +26,9 @@ public class PlatformRepository(GameStoreDbContext dbContext) : IPlatformReposit
         Platform platform = await GetByIdAsync(id);
         _dbContext.Remove(platform);
     }
+
+    public async Task InsertAsync(Platform validPlatform)
+    {
+        await _dbContext.Platforms.AddAsync(validPlatform);
+    }
 }
