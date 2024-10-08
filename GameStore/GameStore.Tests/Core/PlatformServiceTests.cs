@@ -24,4 +24,20 @@ public class PlatformServiceTests
         Assert.NotNull(platform);
         Assert.Equal(platform.Id, id);
     }
+
+    [Fact]
+    public async Task GetAll_ReturnsPlatformsModel()
+    {
+        var mockUnitOfWork = new Mock<IUnitOfWork>();
+
+        mockUnitOfWork.Setup(m => m.PlatformRepository.GetAllAsync())
+            .ReturnsAsync(PlatformSeed.GetPlatforms());
+
+        var platformService = new PlatformService(mockUnitOfWork.Object);
+
+        var platforms = await platformService.GetAllAsync();
+
+        Assert.NotNull(platforms);
+        Assert.Equal(platforms.Count(), PlatformSeed.GetPlatforms().Count);
+    }
 }

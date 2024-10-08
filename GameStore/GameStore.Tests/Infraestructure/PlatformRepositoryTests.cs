@@ -18,4 +18,16 @@ public class PlatformRepositoryTests
         Assert.NotNull(platform);
         Assert.Equal(id, platform.Id);
     }
+
+    [Fact]
+    public async Task GetAll_ReturnsPlatformsInDatabase()
+    {
+        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        var platformRepository = new PlatformRepository(dbContext);
+
+        var platform = await platformRepository.GetAllAsync();
+
+        Assert.NotNull(platform);
+        Assert.Equal(platform.Count(), PlatformSeed.GetPlatforms().Count);
+    }
 }

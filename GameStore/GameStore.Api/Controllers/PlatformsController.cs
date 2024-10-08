@@ -19,4 +19,12 @@ public class PlatformsController(IPlatformService platformService)
 
         return platform is null ? NotFound() : Ok(platform);
     }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Platform>>> GetAllAsync()
+    {
+        var platforms = await _platformService.GetAllAsync();
+
+        return Ok(platforms);
+    }
 }
