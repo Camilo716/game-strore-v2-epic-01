@@ -30,4 +30,17 @@ public class PlatformRepositoryTests
         Assert.NotNull(platform);
         Assert.Equal(platform.Count(), PlatformSeed.GetPlatforms().Count);
     }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesPlatformInDatabase()
+    {
+        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        var unitOfWork = new UnitOfWork(dbContext);
+        Guid id = PlatformSeed.GetPlatforms().First().Id;
+
+        await unitOfWork.PlatformRepository.DeleteByIdAsync(id);
+        await unitOfWork.SaveChangesAsync();
+
+        Assert.Equal(dbContext.Platforms.Count(), PlatformSeed.GetPlatforms().Count - 1);
+    }
 }

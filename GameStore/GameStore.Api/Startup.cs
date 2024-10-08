@@ -20,7 +20,7 @@ public class Startup(IConfiguration configuration)
         services.AddControllers();
     }
 
-    public void ConfigureMiddlewares(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
         {

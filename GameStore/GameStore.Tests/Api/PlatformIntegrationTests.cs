@@ -36,6 +36,17 @@ public class PlatformIntegrationTests : BaseIntegrationTest
         Assert.Equal(platforms.Count(), PlatformSeed.GetPlatforms().Count);
     }
 
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesPlatform()
+    {
+        Guid id = PlatformSeed.GetPlatforms().First().Id;
+
+        var response = await HttpClient.DeleteAsync($"api/platforms/{id}");
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(DbContext.Platforms.Count(), PlatformSeed.GetPlatforms().Count - 1);
+    }
+
     private static async Task<T> GetModelFromHttpResponse<T>(HttpResponseMessage response)
     {
         string stringResponse = await response.Content.ReadAsStringAsync();

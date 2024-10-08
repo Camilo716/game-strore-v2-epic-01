@@ -17,4 +17,9 @@ public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
             return _platformRepository;
         }
     }
+
+    public async Task SaveChangesAsync()
+    {
+        await _dbContext.SaveChangesAsync();
+    }
 }

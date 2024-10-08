@@ -16,4 +16,10 @@ public class PlatformService(IUnitOfWork unitOfWork) : IPlatformService
     {
         return await _unitOfWork.PlatformRepository.GetByIdAsync(id);
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await _unitOfWork.PlatformRepository.DeleteByIdAsync(id);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

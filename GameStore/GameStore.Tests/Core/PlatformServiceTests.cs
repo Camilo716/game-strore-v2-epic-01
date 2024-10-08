@@ -40,4 +40,19 @@ public class PlatformServiceTests
         Assert.NotNull(platforms);
         Assert.Equal(platforms.Count(), PlatformSeed.GetPlatforms().Count);
     }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesPlatform()
+    {
+        var mockUnitOfWork = new Mock<IUnitOfWork>();
+        mockUnitOfWork.Setup(m => m.PlatformRepository.DeleteByIdAsync(It.IsAny<Guid>()));
+
+        Guid id = PlatformSeed.GetPlatforms().First().Id;
+
+        var platformService = new PlatformService(mockUnitOfWork.Object);
+
+        await platformService.DeleteAsync(id);
+
+        mockUnitOfWork.Verify(m => m.PlatformRepository.DeleteByIdAsync(id), Times.Once());
+    }
 }

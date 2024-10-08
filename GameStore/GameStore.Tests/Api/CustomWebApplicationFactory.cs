@@ -1,3 +1,4 @@
+using GameStore.Api;
 using GameStore.Infraestructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

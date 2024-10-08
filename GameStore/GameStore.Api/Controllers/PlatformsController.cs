@@ -27,4 +27,13 @@ public class PlatformsController(IPlatformService platformService)
 
         return Ok(platforms);
     }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<ActionResult> DeleteAsync([FromRoute] Guid id)
+    {
+        await _platformService.DeleteAsync(id);
+
+        return NoContent();
+    }
 }

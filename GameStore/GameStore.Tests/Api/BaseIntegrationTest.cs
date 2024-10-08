@@ -11,11 +11,9 @@ public class BaseIntegrationTest : IDisposable
         Factory = new CustomWebApplicationFactory();
         HttpClient = Factory.CreateClient();
 
-        using var scope = Factory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetRequiredService<GameStoreDbContext>();
-        DbSeeder.SeedData(context);
-
-        DbContext = context;
+        Scope = Factory.Services.CreateScope();
+        DbContext = Scope.ServiceProvider.GetRequiredService<GameStoreDbContext>();
+        DbSeeder.SeedData(DbContext);
     }
 
     protected CustomWebApplicationFactory Factory { get; }
@@ -24,11 +22,14 @@ public class BaseIntegrationTest : IDisposable
 
     protected GameStoreDbContext DbContext { get; }
 
+    protected IServiceScope Scope { get; }
+
     public void Dispose()
     {
         Factory.Dispose();
         HttpClient.Dispose();
         DbContext.Dispose();
+        Scope.Dispose();
         GC.SuppressFinalize(this);
     }
 }
