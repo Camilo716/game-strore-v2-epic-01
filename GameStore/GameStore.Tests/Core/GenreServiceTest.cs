@@ -37,8 +37,8 @@ public class GenreServiceTest
     public async Task GetByParentId_GivenValidParentId_ReturnsChildrenGenres()
     {
         Mock<IUnitOfWork> unitOfWork = new();
-        unitOfWork.Setup(m => m.GenreRepository.GetAllAsync())
-            .ReturnsAsync(GenreSeed.GetGenres());
+        unitOfWork.Setup(m => m.GenreRepository.GetByParentIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync((Guid id) => GenreSeed.GetGenres().Where(g => g.ParentGenreId == id));
 
         var genreService = new GenreService(unitOfWork.Object);
 

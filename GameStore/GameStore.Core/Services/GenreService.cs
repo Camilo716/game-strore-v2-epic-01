@@ -20,8 +20,6 @@ public class GenreService(IUnitOfWork unitOfWork)
 
     public async Task<IEnumerable<Genre>> GetByParentIdAsync(Guid parentId)
     {
-        var genres = await _unitOfWork.GenreRepository.GetAllAsync();
-
-        return genres.Where(g => g.ParentGenreId == parentId);
+        return await _unitOfWork.GenreRepository.GetByParentIdAsync(parentId);
     }
 }

@@ -6,24 +6,24 @@ namespace GameStore.Infraestructure.Repositories;
 public class BaseRepository<TEntity>
     where TEntity : class
 {
-    private readonly DbSet<TEntity> _dbSet;
-
     public BaseRepository(GameStoreDbContext dbContext)
     {
         DbContext = dbContext;
-        _dbSet = DbContext.Set<TEntity>();
+        DbSet = DbContext.Set<TEntity>();
     }
+
+    protected DbSet<TEntity> DbSet { get; private set; }
 
     protected GameStoreDbContext DbContext { get; private set; }
 
     public async Task<TEntity> GetByIdAsync(Guid id)
     {
-        var dbRecord = await _dbSet.FindAsync(id);
+        var dbRecord = await DbSet.FindAsync(id);
         return dbRecord;
     }
 
     public async Task<IEnumerable<TEntity>> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
+        return await DbSet.ToListAsync();
     }
 }

@@ -1,3 +1,4 @@
+using GameStore.Core.Models;
 using GameStore.Infraestructure.Data;
 using GameStore.Tests.Seed;
 
@@ -19,7 +20,7 @@ public class GenreRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_ReturnsPlatformsInDatabase()
+    public async Task GetAll_ReturnsGenresInDatabase()
     {
         var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
         var unitOfWork = new UnitOfWork(dbContext);
@@ -28,5 +29,16 @@ public class GenreRepositoryTests
 
         Assert.NotNull(genre);
         Assert.Equal(GenreSeed.GetGenres().Count, genre.Count());
+    }
+
+    [Fact]
+    public async Task GetByParentId_GivenValidParentId_ReturnsChildrenGenresInDatabase()
+    {
+        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        var unitOfWork = new UnitOfWork(dbContext);
+
+        var childrenGenres = await unitOfWork.GenreRepository.GetByParentIdAsync(GenreSeed.Action.Id);
+
+        Assert.Equivalent(new List<Genre>() { GenreSeed.Shooter }, childrenGenres);
     }
 }
