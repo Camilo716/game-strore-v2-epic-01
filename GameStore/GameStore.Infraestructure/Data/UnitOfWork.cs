@@ -8,6 +8,7 @@ public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
     private readonly GameStoreDbContext _dbContext = dbContext;
 
     private IPlatformRepository _platformRepository;
+    private IGenreRepository _genreRepository;
 
     public IPlatformRepository PlatformRepository
     {
@@ -15,6 +16,15 @@ public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
         {
             _platformRepository ??= new PlatformRepository(_dbContext);
             return _platformRepository;
+        }
+    }
+
+    public IGenreRepository GenreRepository
+    {
+        get
+        {
+            _genreRepository ??= new GenreRepository(_dbContext);
+            return _genreRepository;
         }
     }
 

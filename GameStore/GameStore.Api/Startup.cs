@@ -16,6 +16,7 @@ public class Startup(IConfiguration configuration)
         services.AddSwaggerGen();
 
         services.AddScoped<IPlatformService, PlatformService>();
+        services.AddScoped<IGenreService, GenreService>();
 
         services.AddControllers();
     }

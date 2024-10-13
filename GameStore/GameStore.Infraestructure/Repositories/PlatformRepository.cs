@@ -5,36 +5,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Infraestructure.Repositories;
 
-public class PlatformRepository(GameStoreDbContext dbContext) : IPlatformRepository
+public class PlatformRepository(GameStoreDbContext dbContext)
+    : BaseRepository<Platform>(dbContext),
+    IPlatformRepository
 {
-    private readonly GameStoreDbContext _dbContext = dbContext;
-
-    public async Task<Platform> GetByIdAsync(Guid id)
-    {
-        var platform = await _dbContext.Platforms.FindAsync(id);
-
-        return platform;
-    }
-
     public async Task<IEnumerable<Platform>> GetAllAsync()
     {
-        return await _dbContext.Platforms.ToListAsync();
+        return await DbContext.Platforms.ToListAsync();
     }
 
     public async Task DeleteByIdAsync(Guid id)
     {
         Platform platform = await GetByIdAsync(id);
-        _dbContext.Remove(platform);
+        DbContext.Remove(platform);
     }
 
     public async Task InsertAsync(Platform platform)
     {
-        await _dbContext.Platforms.AddAsync(platform);
+        await DbContext.Platforms.AddAsync(platform);
     }
 
     public void Update(Platform platform)
     {
-        var platformEntry = _dbContext.Entry(platform);
+        var platformEntry = DbContext.Entry(platform);
         platformEntry.State = EntityState.Modified;
     }
 }

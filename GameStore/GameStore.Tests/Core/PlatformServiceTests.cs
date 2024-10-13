@@ -12,9 +12,7 @@ public class PlatformServiceTests
     public async Task GetById_GivenValidId_ReturnsPlatformModel()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
-
         var platformService = new PlatformService(unitOfWork.Object);
-
         Guid id = PlatformSeed.GetPlatforms().First().Id;
 
         var platform = await platformService.GetByIdAsync(id);
