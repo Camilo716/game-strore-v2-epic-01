@@ -13,7 +13,7 @@ public class PlatformServiceTests
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
         var platformService = new PlatformService(unitOfWork.Object);
-        Guid id = PlatformSeed.GetPlatforms().First().Id;
+        Guid id = PlatformSeed.Mobile.Id;
 
         var platform = await platformService.GetByIdAsync(id);
 
@@ -22,7 +22,7 @@ public class PlatformServiceTests
     }
 
     [Fact]
-    public async Task GetAll_ReturnsPlatformsModel()
+    public async Task GetAll_ReturnsPlatformsModels()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
         var platformService = new PlatformService(unitOfWork.Object);
@@ -30,7 +30,7 @@ public class PlatformServiceTests
         var platforms = await platformService.GetAllAsync();
 
         Assert.NotNull(platforms);
-        Assert.Equal(platforms.Count(), PlatformSeed.GetPlatforms().Count);
+        Assert.Equal(PlatformSeed.GetPlatforms().Count, platforms.Count());
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public class PlatformServiceTests
         var mockUnitOfWork = new Mock<IUnitOfWork>();
 
         mockUnitOfWork.Setup(m => m.PlatformRepository.GetByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(PlatformSeed.GetPlatforms().First());
+            .ReturnsAsync(PlatformSeed.Mobile);
 
         mockUnitOfWork.Setup(m => m.PlatformRepository.GetAllAsync())
             .ReturnsAsync(PlatformSeed.GetPlatforms());

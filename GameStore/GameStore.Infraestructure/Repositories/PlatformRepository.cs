@@ -9,11 +9,6 @@ public class PlatformRepository(GameStoreDbContext dbContext)
     : BaseRepository<Platform>(dbContext),
     IPlatformRepository
 {
-    public async Task<IEnumerable<Platform>> GetAllAsync()
-    {
-        return await DbContext.Platforms.ToListAsync();
-    }
-
     public async Task DeleteByIdAsync(Guid id)
     {
         Platform platform = await GetByIdAsync(id);

@@ -12,4 +12,9 @@ public class GenreService(IUnitOfWork unitOfWork)
     {
         return await _unitOfWork.GenreRepository.GetByIdAsync(id);
     }
+
+    public async Task<IEnumerable<Genre>> GetAllAsync()
+    {
+        return await _unitOfWork.GenreRepository.GetAllAsync();
+    }
 }

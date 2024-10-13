@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using GameStore.Api.Dtos;
 using GameStore.Core.Models;
 using GameStore.Tests.Seed;
-using Newtonsoft.Json;
 
 namespace GameStore.Tests.Api;
 
@@ -33,7 +32,7 @@ public class PlatformIntegrationTests : BaseIntegrationTest
         var response = await HttpClient.GetAsync("api/platforms");
 
         response.EnsureSuccessStatusCode();
-        var platforms = await GetModelFromHttpResponse<IEnumerable<Platform>>(response);
+        var platforms = await HttpHelper.GetModelFromHttpResponseAsync<IEnumerable<Platform>>(response);
         Assert.NotNull(platforms);
         Assert.Equal(platforms.Count(), PlatformSeed.GetPlatforms().Count);
     }
@@ -76,12 +75,5 @@ public class PlatformIntegrationTests : BaseIntegrationTest
         var response = await HttpClient.PutAsJsonAsync("api/platforms", request);
 
         response.EnsureSuccessStatusCode();
-    }
-
-    private static async Task<T> GetModelFromHttpResponse<T>(HttpResponseMessage response)
-    {
-        string stringResponse = await response.Content.ReadAsStringAsync();
-        var platforms = JsonConvert.DeserializeObject<T>(stringResponse);
-        return platforms;
     }
 }

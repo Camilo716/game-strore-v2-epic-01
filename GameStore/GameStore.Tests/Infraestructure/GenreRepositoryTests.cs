@@ -17,4 +17,16 @@ public class GenreRepositoryTests
         Assert.NotNull(genre);
         Assert.Equal(id, genre.Id);
     }
+
+    [Fact]
+    public async Task GetAll_ReturnsPlatformsInDatabase()
+    {
+        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        var unitOfWork = new UnitOfWork(dbContext);
+
+        var genre = await unitOfWork.GenreRepository.GetAllAsync();
+
+        Assert.NotNull(genre);
+        Assert.Equal(GenreSeed.GetGenres().Count, genre.Count());
+    }
 }

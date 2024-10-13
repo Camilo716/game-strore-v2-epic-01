@@ -13,9 +13,16 @@ public class GenresController(IGenreService genreService)
 
     [HttpGet]
     [Route("{id}")]
-    public async Task<ActionResult<Genre>> Get([FromRoute] Guid id)
+    public async Task<ActionResult<Genre>> GetById([FromRoute] Guid id)
     {
         var genre = await _genreService.GetByIdAsync(id);
         return Ok(genre);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Genre>>> Get()
+    {
+        var genres = await _genreService.GetAllAsync();
+        return Ok(genres);
     }
 }

@@ -21,4 +21,9 @@ public class BaseRepository<TEntity>
         var dbRecord = await _dbSet.FindAsync(id);
         return dbRecord;
     }
+
+    public async Task<IEnumerable<TEntity>> GetAllAsync()
+    {
+        return await _dbSet.ToListAsync();
+    }
 }
