@@ -25,4 +25,14 @@ public class GenreIntegrationTests : BaseIntegrationTest
         Assert.NotNull(genres);
         Assert.Equal(genres.Count(), GenreSeed.GetGenres().Count);
     }
+
+    [Fact]
+    public async Task GetByParentId_GivenValidParentId_ReturnsSuccess()
+    {
+        Guid parentId = GenreSeed.Action.Id;
+
+        var response = await HttpClient.GetAsync($"api/genres/{parentId}/genres");
+
+        response.EnsureSuccessStatusCode();
+    }
 }

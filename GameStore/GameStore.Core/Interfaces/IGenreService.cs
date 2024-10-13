@@ -7,4 +7,6 @@ public interface IGenreService
     public Task<Genre> GetByIdAsync(Guid id);
 
     public Task<IEnumerable<Genre>> GetAllAsync();
+
+    public Task<IEnumerable<Genre>> GetByParentIdAsync(Guid parentId);
 }

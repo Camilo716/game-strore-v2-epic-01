@@ -25,4 +25,12 @@ public class GenresController(IGenreService genreService)
         var genres = await _genreService.GetAllAsync();
         return Ok(genres);
     }
+
+    [HttpGet]
+    [Route("{parentId}/genres")]
+    public async Task<ActionResult<IEnumerable<Genre>>> GetByParentId([FromRoute] Guid parentId)
+    {
+        var childrenGenres = await _genreService.GetByParentIdAsync(parentId);
+        return Ok(childrenGenres);
+    }
 }

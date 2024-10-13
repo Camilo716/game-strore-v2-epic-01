@@ -1,4 +1,5 @@
 using GameStore.Core.Interfaces;
+using GameStore.Core.Models;
 using GameStore.Core.Services;
 using GameStore.Tests.Seed;
 using Moq;
@@ -24,12 +25,27 @@ public class GenreServiceTest
     public async Task GetAll_ReturnsGenreModels()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
-        var platformService = new GenreService(unitOfWork.Object);
+        var genreService = new GenreService(unitOfWork.Object);
 
-        var genres = await platformService.GetAllAsync();
+        var genres = await genreService.GetAllAsync();
 
         Assert.NotNull(genres);
         Assert.Equal(GenreSeed.GetGenres().Count, genres.Count());
+    }
+
+    [Fact]
+    public async Task GetByParentId_GivenValidParentId_ReturnsChildrenGenres()
+    {
+        Mock<IUnitOfWork> unitOfWork = new();
+        unitOfWork.Setup(m => m.GenreRepository.GetAllAsync())
+            .ReturnsAsync(GenreSeed.GetGenres());
+
+        var genreService = new GenreService(unitOfWork.Object);
+
+        var childrenGenres = await genreService.GetByParentIdAsync(GenreSeed.Action.Id);
+
+        Assert.NotNull(childrenGenres);
+        Assert.Equivalent(new List<Genre>() { GenreSeed.Shooter }, childrenGenres);
     }
 
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
