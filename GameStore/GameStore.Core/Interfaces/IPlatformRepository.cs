@@ -8,7 +8,9 @@ public interface IPlatformRepository
 
     public Task<IEnumerable<Platform>> GetAllAsync();
 
-    Task DeleteByIdAsync(Guid id);
+    public Task DeleteByIdAsync(Guid id);
 
-    Task InsertAsync(Platform validPlatform);
+    public Task InsertAsync(Platform platform);
+
+    public void Update(Platform platform);
 }

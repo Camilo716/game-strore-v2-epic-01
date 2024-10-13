@@ -28,4 +28,10 @@ public class PlatformService(IUnitOfWork unitOfWork) : IPlatformService
         await _unitOfWork.PlatformRepository.InsertAsync(platform);
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task UpdateAsync(Platform platform)
+    {
+        _unitOfWork.PlatformRepository.Update(platform);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

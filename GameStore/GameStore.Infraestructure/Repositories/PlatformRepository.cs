@@ -27,8 +27,14 @@ public class PlatformRepository(GameStoreDbContext dbContext) : IPlatformReposit
         _dbContext.Remove(platform);
     }
 
-    public async Task InsertAsync(Platform validPlatform)
+    public async Task InsertAsync(Platform platform)
     {
-        await _dbContext.Platforms.AddAsync(validPlatform);
+        await _dbContext.Platforms.AddAsync(platform);
+    }
+
+    public void Update(Platform platform)
+    {
+        var platformEntry = _dbContext.Entry(platform);
+        platformEntry.State = EntityState.Modified;
     }
 }

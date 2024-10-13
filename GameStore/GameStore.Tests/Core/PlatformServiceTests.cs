@@ -11,12 +11,9 @@ public class PlatformServiceTests
     [Fact]
     public async Task GetById_GivenValidId_ReturnsPlatformModel()
     {
-        var mockUnitOfWork = new Mock<IUnitOfWork>();
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
 
-        mockUnitOfWork.Setup(m => m.PlatformRepository.GetByIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync(PlatformSeed.GetPlatforms().First());
-
-        var platformService = new PlatformService(mockUnitOfWork.Object);
+        var platformService = new PlatformService(unitOfWork.Object);
 
         Guid id = PlatformSeed.GetPlatforms().First().Id;
 
@@ -29,12 +26,8 @@ public class PlatformServiceTests
     [Fact]
     public async Task GetAll_ReturnsPlatformsModel()
     {
-        var mockUnitOfWork = new Mock<IUnitOfWork>();
-
-        mockUnitOfWork.Setup(m => m.PlatformRepository.GetAllAsync())
-            .ReturnsAsync(PlatformSeed.GetPlatforms());
-
-        var platformService = new PlatformService(mockUnitOfWork.Object);
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var platformService = new PlatformService(unitOfWork.Object);
 
         var platforms = await platformService.GetAllAsync();
 
@@ -45,31 +38,59 @@ public class PlatformServiceTests
     [Fact]
     public async Task Delete_GivenValidId_DeletesPlatform()
     {
-        var mockUnitOfWork = new Mock<IUnitOfWork>();
-        mockUnitOfWork.Setup(m => m.PlatformRepository.DeleteByIdAsync(It.IsAny<Guid>()));
-
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
         Guid id = PlatformSeed.GetPlatforms().First().Id;
-
-        var platformService = new PlatformService(mockUnitOfWork.Object);
+        var platformService = new PlatformService(unitOfWork.Object);
 
         await platformService.DeleteAsync(id);
 
-        mockUnitOfWork.Verify(m => m.PlatformRepository.DeleteByIdAsync(id), Times.Once());
+        unitOfWork.Verify(m => m.PlatformRepository.DeleteByIdAsync(id), Times.Once());
     }
 
     [Fact]
     public async Task Create_GivenValidPlatform_CreatesPlatform()
     {
-        var mockUnitOfWork = new Mock<IUnitOfWork>();
-        mockUnitOfWork.Setup(m => m.PlatformRepository.InsertAsync(It.IsAny<Platform>()));
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
         var validPlatform = new Platform() { Type = "Virtual Reality" };
-
-        var platformService = new PlatformService(mockUnitOfWork.Object);
+        var platformService = new PlatformService(unitOfWork.Object);
 
         await platformService.CreateAsync(validPlatform);
 
-        mockUnitOfWork.Verify(
+        unitOfWork.Verify(
             m => m.PlatformRepository.InsertAsync(It.Is<Platform>(p => p.Type == validPlatform.Type)),
             Times.Once());
+    }
+
+    [Fact]
+    public async Task Update_GivenValidPlatform_UpdatesPlatform()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var platform = new Platform() { Type = "Virtual Reality" };
+        var platformService = new PlatformService(unitOfWork.Object);
+
+        await platformService.UpdateAsync(platform);
+
+        unitOfWork.Verify(
+            m => m.PlatformRepository.Update(It.Is<Platform>(p => p.Type == platform.Type)),
+            Times.Once());
+    }
+
+    private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
+    {
+        var mockUnitOfWork = new Mock<IUnitOfWork>();
+
+        mockUnitOfWork.Setup(m => m.PlatformRepository.GetByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(PlatformSeed.GetPlatforms().First());
+
+        mockUnitOfWork.Setup(m => m.PlatformRepository.GetAllAsync())
+            .ReturnsAsync(PlatformSeed.GetPlatforms());
+
+        mockUnitOfWork.Setup(m => m.PlatformRepository.DeleteByIdAsync(It.IsAny<Guid>()));
+
+        mockUnitOfWork.Setup(m => m.PlatformRepository.InsertAsync(It.IsAny<Platform>()));
+
+        mockUnitOfWork.Setup(m => m.PlatformRepository.Update(It.IsAny<Platform>()));
+
+        return mockUnitOfWork;
     }
 }

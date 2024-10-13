@@ -11,4 +11,6 @@ public interface IPlatformService
     public Task DeleteAsync(Guid id);
 
     public Task CreateAsync(Platform platform);
+
+    public Task UpdateAsync(Platform platform);
 }

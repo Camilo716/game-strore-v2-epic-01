@@ -63,6 +63,21 @@ public class PlatformIntegrationTests : BaseIntegrationTest
         Assert.Equal(PlatformSeed.GetPlatforms().Count + 1, DbContext.Platforms.Count());
     }
 
+    [Fact]
+    public async Task Put_GivenValidPlatform_UpdatesPlatform()
+    {
+        var platform = PlatformSeed.GetPlatforms().First();
+        platform.Type = "Virtual Reality";
+        var request = new PlatformCreationDto()
+        {
+            Platform = platform,
+        };
+
+        var response = await HttpClient.PutAsJsonAsync("api/platforms", request);
+
+        response.EnsureSuccessStatusCode();
+    }
+
     private static async Task<T> GetModelFromHttpResponse<T>(HttpResponseMessage response)
     {
         string stringResponse = await response.Content.ReadAsStringAsync();

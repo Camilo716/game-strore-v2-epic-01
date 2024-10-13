@@ -57,4 +57,19 @@ public class PlatformRepositoryTests
 
         Assert.Equal(PlatformSeed.GetPlatforms().Count + 1, dbContext.Platforms.Count());
     }
+
+    [Fact]
+    public async Task Update_GivenValidPlatform_UpdatesPlatformInDatabase()
+    {
+        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        var unitOfWork = new UnitOfWork(dbContext);
+        var platform = PlatformSeed.GetPlatforms().First();
+        platform.Type = "Virtual Reality";
+
+        unitOfWork.PlatformRepository.Update(platform);
+        await unitOfWork.SaveChangesAsync();
+
+        var updatedPlatform = await dbContext.Platforms.FindAsync(platform.Id);
+        Assert.Equal(platform, updatedPlatform);
+    }
 }

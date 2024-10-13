@@ -52,4 +52,18 @@ public class PlatformsController(IPlatformService platformService)
         var createdPlatform = await _platformService.GetByIdAsync(platform.Id);
         return CreatedAtAction(nameof(GetById), new { id = createdPlatform.Id }, createdPlatform);
     }
+
+    [HttpPut]
+    public async Task<ActionResult> Put([FromBody] PlatformCreationDto platformUpdateDto)
+    {
+        var platform = new Platform()
+        {
+            Id = platformUpdateDto.Platform.Id,
+            Type = platformUpdateDto.Platform.Type,
+        };
+
+        await _platformService.UpdateAsync(platform);
+
+        return Ok();
+    }
 }
