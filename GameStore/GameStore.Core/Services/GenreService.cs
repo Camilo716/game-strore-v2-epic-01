@@ -22,4 +22,10 @@ public class GenreService(IUnitOfWork unitOfWork)
     {
         return await _unitOfWork.GenreRepository.GetByParentIdAsync(parentId);
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await _unitOfWork.GenreRepository.DeleteByIdAsync(id);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

@@ -26,4 +26,10 @@ public class BaseRepository<TEntity>
     {
         return await DbSet.ToListAsync();
     }
+
+    public async Task DeleteByIdAsync(Guid id)
+    {
+        var dbRecord = await GetByIdAsync(id);
+        DbContext.Remove(dbRecord);
+    }
 }

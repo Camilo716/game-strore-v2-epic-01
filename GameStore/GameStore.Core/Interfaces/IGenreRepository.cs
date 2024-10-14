@@ -9,4 +9,6 @@ public interface IGenreRepository
     public Task<IEnumerable<Genre>> GetAllAsync();
 
     Task<IEnumerable<Genre>> GetByParentIdAsync(Guid parentId);
+
+    Task DeleteByIdAsync(Guid id);
 }

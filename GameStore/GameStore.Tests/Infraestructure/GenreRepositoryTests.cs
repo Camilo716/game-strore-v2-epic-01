@@ -39,6 +39,21 @@ public class GenreRepositoryTests
 
         var childrenGenres = await unitOfWork.GenreRepository.GetByParentIdAsync(GenreSeed.Action.Id);
 
-        Assert.Equivalent(new List<Genre>() { GenreSeed.Shooter }, childrenGenres);
+        var expectedChildrenGenres = new List<Genre>() { GenreSeed.Shooter };
+        Assert.Equivalent(expectedChildrenGenres, childrenGenres);
+    }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesGenreInDatabase()
+    {
+        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        var unitOfWork = new UnitOfWork(dbContext);
+        Guid id = GenreSeed.GetGenres().First().Id;
+
+        await unitOfWork.GenreRepository.DeleteByIdAsync(id);
+        await unitOfWork.SaveChangesAsync();
+
+        var expectedGenresInDb = GenreSeed.GetGenres().Count - 1;
+        Assert.Equal(expectedGenresInDb, dbContext.Genres.Count());
     }
 }

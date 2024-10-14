@@ -43,6 +43,7 @@ public class PlatformServiceTests
         await platformService.DeleteAsync(id);
 
         unitOfWork.Verify(m => m.PlatformRepository.DeleteByIdAsync(id), Times.Once());
+        unitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once());
     }
 
     [Fact]

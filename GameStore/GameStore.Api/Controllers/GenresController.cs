@@ -33,4 +33,12 @@ public class GenresController(IGenreService genreService)
         var childrenGenres = await _genreService.GetByParentIdAsync(parentId);
         return Ok(childrenGenres);
     }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<ActionResult> Delete([FromRoute] Guid id)
+    {
+        await _genreService.DeleteAsync(id);
+        return NoContent();
+    }
 }

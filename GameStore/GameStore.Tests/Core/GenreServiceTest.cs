@@ -48,6 +48,19 @@ public class GenreServiceTest
         Assert.Equivalent(new List<Genre>() { GenreSeed.Shooter }, childrenGenres);
     }
 
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesGenre()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        Guid id = GenreSeed.GetGenres().First().Id;
+        var genreService = new GenreService(unitOfWork.Object);
+
+        await genreService.DeleteAsync(id);
+
+        unitOfWork.Verify(m => m.GenreRepository.DeleteByIdAsync(id), Times.Once());
+        unitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once());
+    }
+
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
     {
         var mockUnitOfWork = new Mock<IUnitOfWork>();

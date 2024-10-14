@@ -1,3 +1,4 @@
+using System.Net;
 using GameStore.Core.Models;
 using GameStore.Tests.Seed;
 
@@ -34,5 +35,16 @@ public class GenreIntegrationTests : BaseIntegrationTest
         var response = await HttpClient.GetAsync($"api/genres/{parentId}/genres");
 
         response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesGenre()
+    {
+        Guid id = GenreSeed.GetGenres().First().Id;
+
+        var response = await HttpClient.DeleteAsync($"api/genres/{id}");
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(GenreSeed.GetGenres().Count - 1, DbContext.Genres.Count());
     }
 }
