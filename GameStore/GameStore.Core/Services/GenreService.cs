@@ -34,4 +34,10 @@ public class GenreService(IUnitOfWork unitOfWork)
         await _unitOfWork.GenreRepository.InsertAsync(genre);
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task UpdateAsync(Genre genre)
+    {
+        _unitOfWork.GenreRepository.Update(genre);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

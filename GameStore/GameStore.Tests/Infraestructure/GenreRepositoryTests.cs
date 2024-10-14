@@ -69,4 +69,19 @@ public class GenreRepositoryTests
 
         Assert.Equal(GenreSeed.GetGenres().Count + 1, dbContext.Genres.Count());
     }
+
+    [Fact]
+    public async Task Update_GivenValidGenre_UpdatesGenreInDatabase()
+    {
+        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        var unitOfWork = new UnitOfWork(dbContext);
+        var genre = GenreSeed.GetGenres().First();
+        genre.Name = "Adventure";
+
+        unitOfWork.GenreRepository.Update(genre);
+        await unitOfWork.SaveChangesAsync();
+
+        var updatedGenre = await dbContext.Genres.FindAsync(genre.Id);
+        Assert.Equal(genre, updatedGenre);
+    }
 }

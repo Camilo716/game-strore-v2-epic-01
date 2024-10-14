@@ -63,4 +63,19 @@ public class GenreIntegrationTests : BaseIntegrationTest
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.Equal(GenreSeed.GetGenres().Count + 1, DbContext.Genres.Count());
     }
+
+    [Fact]
+    public async Task Put_GivenValidGenre_UpdatesGenre()
+    {
+        var genre = GenreSeed.GetGenres().First();
+        genre.Name = "Adventure";
+        var request = new GenreCreationDto()
+        {
+            Genre = genre,
+        };
+
+        var response = await HttpClient.PutAsJsonAsync("api/genres", request);
+
+        response.EnsureSuccessStatusCode();
+    }
 }

@@ -59,4 +59,18 @@ public class GenresController(IGenreService genreService)
             routeValues: new { id = genre.Id },
             value: genre);
     }
+
+    [HttpPut]
+    public async Task<ActionResult> Put([FromBody] GenreCreationDto genreUpdateDto)
+    {
+        var genre = new Genre()
+        {
+            Id = genreUpdateDto.Genre.Id,
+            Name = genreUpdateDto.Genre.Name,
+        };
+
+        await _genreService.UpdateAsync(genre);
+
+        return Ok();
+    }
 }

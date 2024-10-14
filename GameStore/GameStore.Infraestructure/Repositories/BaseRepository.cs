@@ -37,4 +37,10 @@ public class BaseRepository<TEntity>
     {
         await DbSet.AddAsync(entity);
     }
+
+    public void Update(TEntity entity)
+    {
+        var entry = DbContext.Entry(entity);
+        entry.State = EntityState.Modified;
+    }
 }

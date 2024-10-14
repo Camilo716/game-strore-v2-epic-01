@@ -13,4 +13,6 @@ public interface IGenreService
     public Task DeleteAsync(Guid id);
 
     Task CreateAsync(Genre genre);
+
+    Task UpdateAsync(Genre genre);
 }

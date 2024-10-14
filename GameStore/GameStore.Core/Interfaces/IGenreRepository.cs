@@ -8,9 +8,11 @@ public interface IGenreRepository
 
     public Task<IEnumerable<Genre>> GetAllAsync();
 
-    Task<IEnumerable<Genre>> GetByParentIdAsync(Guid parentId);
+    public Task<IEnumerable<Genre>> GetByParentIdAsync(Guid parentId);
 
-    Task DeleteByIdAsync(Guid id);
+    public Task DeleteByIdAsync(Guid id);
 
-    Task InsertAsync(Genre genre);
+    public Task InsertAsync(Genre genre);
+
+    public void Update(Genre genre);
 }
