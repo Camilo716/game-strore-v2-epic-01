@@ -32,4 +32,9 @@ public class BaseRepository<TEntity>
         var dbRecord = await GetByIdAsync(id);
         DbContext.Remove(dbRecord);
     }
+
+    public async Task InsertAsync(TEntity entity)
+    {
+        await DbSet.AddAsync(entity);
+    }
 }

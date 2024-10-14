@@ -61,6 +61,22 @@ public class GenreServiceTest
         unitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once());
     }
 
+    [Fact]
+    public async Task Create_GivenValidGenre_CreatesGenre()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var validGenre = new Genre() { Name = "Adventure" };
+        var genreService = new GenreService(unitOfWork.Object);
+
+        await genreService.CreateAsync(validGenre);
+
+        unitOfWork.Verify(
+            m => m.GenreRepository.InsertAsync(It.Is<Genre>(p => p.Name == validGenre.Name)),
+            Times.Once());
+
+        unitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once());
+    }
+
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
     {
         var mockUnitOfWork = new Mock<IUnitOfWork>();

@@ -49,7 +49,7 @@ public class PlatformIntegrationTests : BaseIntegrationTest
     }
 
     [Fact]
-    public async Task Post_GivenValidPlatform_CreatePlatform()
+    public async Task Post_GivenValidPlatform_CreatesPlatform()
     {
         var validPlatform = new PlatformCreationDto()
         {

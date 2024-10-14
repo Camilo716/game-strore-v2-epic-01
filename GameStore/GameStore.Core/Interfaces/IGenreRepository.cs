@@ -11,4 +11,6 @@ public interface IGenreRepository
     Task<IEnumerable<Genre>> GetByParentIdAsync(Guid parentId);
 
     Task DeleteByIdAsync(Guid id);
+
+    Task InsertAsync(Genre genre);
 }

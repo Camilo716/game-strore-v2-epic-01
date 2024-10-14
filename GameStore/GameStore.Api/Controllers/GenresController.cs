@@ -1,3 +1,4 @@
+using GameStore.Api.Dtos;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -40,5 +41,22 @@ public class GenresController(IGenreService genreService)
     {
         await _genreService.DeleteAsync(id);
         return NoContent();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Post([FromBody] GenreCreationDto genreCreationDto)
+    {
+        var genre = new Genre()
+        {
+            Id = genreCreationDto.Genre.Id,
+            Name = genreCreationDto.Genre.Name,
+        };
+
+        await _genreService.CreateAsync(genre);
+
+        return CreatedAtAction(
+            actionName: nameof(GetById),
+            routeValues: new { id = genre.Id },
+            value: genre);
     }
 }

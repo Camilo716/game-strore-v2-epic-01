@@ -9,11 +9,6 @@ public class PlatformRepository(GameStoreDbContext dbContext)
     : BaseRepository<Platform>(dbContext),
     IPlatformRepository
 {
-    public async Task InsertAsync(Platform platform)
-    {
-        await DbContext.Platforms.AddAsync(platform);
-    }
-
     public void Update(Platform platform)
     {
         var platformEntry = DbContext.Entry(platform);

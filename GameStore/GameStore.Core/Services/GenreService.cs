@@ -28,4 +28,10 @@ public class GenreService(IUnitOfWork unitOfWork)
         await _unitOfWork.GenreRepository.DeleteByIdAsync(id);
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task CreateAsync(Genre genre)
+    {
+        await _unitOfWork.GenreRepository.InsertAsync(genre);
+        await _unitOfWork.SaveChangesAsync();
+    }
 }
