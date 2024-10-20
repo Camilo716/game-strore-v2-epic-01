@@ -10,20 +10,21 @@ internal class DbSeeder
     {
         context.Platforms.AddRange(PlatformSeed.GetPlatforms());
 
-        context.Genres.AddRange(GenreSeed.GetGenres());
+        var genres = GenreSeed.GetGenres();
+        context.Genres.AddRange(genres);
 
         var games = GameSeed.GetGames();
-        AttachGenresToGames(context, games);
+        AttachGenresToGames(genres, games);
         context.Games.AddRange(games);
 
         context.SaveChanges();
     }
 
-    private static void AttachGenresToGames(GameStoreDbContext context, List<Game> games)
+    private static void AttachGenresToGames(List<Genre> genres, List<Game> games)
     {
         games.ForEach(game =>
         {
-            var genresOfGame = context.Genres
+            var genresOfGame = genres
                 .Where(g => game.Genres.Select(g => g.Id).Contains(g.Id))
                 .ToList();
 
