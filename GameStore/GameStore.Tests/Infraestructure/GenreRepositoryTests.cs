@@ -7,7 +7,7 @@ namespace GameStore.Tests.Infraestructure;
 public class GenreRepositoryTests
 {
     [Fact]
-    public async Task GetById_GivenValidId_ReturnsPlatformsInDatabase()
+    public async Task GetById_GivenValidId_ReturnsGenresInDatabase()
     {
         var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
         var unitOfWork = new UnitOfWork(dbContext);

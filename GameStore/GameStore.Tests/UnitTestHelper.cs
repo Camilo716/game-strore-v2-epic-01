@@ -10,6 +10,7 @@ internal static class UnitTestHelper
     {
         var options = new DbContextOptionsBuilder<GameStoreDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .EnableSensitiveDataLogging()
             .Options;
 
         using var context = new GameStoreDbContext(options);

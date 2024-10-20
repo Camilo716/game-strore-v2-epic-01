@@ -7,4 +7,8 @@ public class Genre
     public string Name { get; set; }
 
     public Guid? ParentGenreId { get; set; }
+
+    public ICollection<Game> Games { get; set; } =
+    [
+    ];
 }

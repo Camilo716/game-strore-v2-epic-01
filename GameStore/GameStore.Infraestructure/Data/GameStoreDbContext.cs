@@ -9,6 +9,8 @@ public class GameStoreDbContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<Genre> Genres { get; set; }
 
+    public DbSet<Game> Games { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Platform>().HasData([
