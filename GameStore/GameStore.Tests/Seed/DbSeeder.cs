@@ -1,4 +1,6 @@
+using GameStore.Core.Models;
 using GameStore.Infraestructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Tests.Seed;
 
@@ -10,9 +12,22 @@ internal class DbSeeder
 
         context.Genres.AddRange(GenreSeed.GetGenres());
 
-        var gamesSeed = new GameSeed(context);
+        var games = GameSeed.GetGames();
+        AttachGenresToGames(context, games);
+        context.Games.AddRange(games);
 
-        context.Games.AddRange(gamesSeed.GetGames());
         context.SaveChanges();
+    }
+
+    private static void AttachGenresToGames(GameStoreDbContext context, List<Game> games)
+    {
+        games.ForEach(game =>
+        {
+            var genresOfGame = context.Genres
+                .Where(g => game.Genres.Select(g => g.Id).Contains(g.Id))
+                .ToList();
+
+            game.Genres = genresOfGame;
+        });
     }
 }

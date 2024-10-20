@@ -14,7 +14,7 @@ public class GameRepositoryTests
         var game = await unitOfWork.GameRepository.GetAllAsync();
 
         Assert.NotNull(game);
-        Assert.Equal(new GameSeed(dbContext).GetGames().Count, game.Count());
+        Assert.Equal(GameSeed.GetGames().Count, game.Count());
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class GameRepositoryTests
     {
         var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
         var unitOfWork = new UnitOfWork(dbContext);
-        Guid id = new GameSeed(dbContext).GearsOfWar.Id;
+        Guid id = GameSeed.GearsOfWar.Id;
 
         var genre = await unitOfWork.GameRepository.GetByIdAsync(id);
 
