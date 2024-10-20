@@ -10,19 +10,9 @@ internal class DbSeeder
 
         context.Genres.AddRange(GenreSeed.GetGenres());
 
-        var games = GameSeed.GetGames();
-        games.ForEach(g => g.Genres =
-        [
-            .. context.Genres
-        ]);
+        var gamesSeed = new GameSeed(context);
 
-        /*
-        games
-            .ForEach(game => game.Genres
-                .ForEach(genre => context.Attach(genre).State = EntityState.Unchanged)); // .ForEach(genre => throw new Exception($"state of {game.Name}, {genre.Name},{context.Entry(genre).State}")));
-        */
-
-        context.Games.AddRange(games);
+        context.Games.AddRange(gamesSeed.GetGames());
         context.SaveChanges();
     }
 }
