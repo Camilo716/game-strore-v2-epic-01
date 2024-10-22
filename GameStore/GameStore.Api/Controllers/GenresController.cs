@@ -17,14 +17,16 @@ public class GenresController(IGenreService genreService)
     public async Task<ActionResult<Genre>> GetById([FromRoute] Guid id)
     {
         var genre = await _genreService.GetByIdAsync(id);
-        return Ok(genre);
+        var response = new GenreResponseDto(genre);
+        return Ok(response);
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Genre>>> Get()
     {
         var genres = await _genreService.GetAllAsync();
-        return Ok(genres);
+        var response = genres.Select(g => new GenreResponseDto(g));
+        return Ok(response);
     }
 
     [HttpGet]
@@ -32,7 +34,8 @@ public class GenresController(IGenreService genreService)
     public async Task<ActionResult<IEnumerable<Genre>>> GetByParentId([FromRoute] Guid parentId)
     {
         var childrenGenres = await _genreService.GetByParentIdAsync(parentId);
-        return Ok(childrenGenres);
+        var response = childrenGenres.Select(g => new GenreResponseDto(g));
+        return Ok(response);
     }
 
     [HttpDelete]

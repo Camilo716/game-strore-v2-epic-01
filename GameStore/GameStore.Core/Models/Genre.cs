@@ -8,7 +8,7 @@ public class Genre
 
     public Guid? ParentGenreId { get; set; }
 
-    public ICollection<Game> Games { get; set; } =
+    public List<Game> Games { get; set; } =
     [
     ];
 }
