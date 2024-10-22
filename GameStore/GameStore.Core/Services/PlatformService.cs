@@ -34,4 +34,10 @@ public class PlatformService(IUnitOfWork unitOfWork) : IPlatformService
         _unitOfWork.PlatformRepository.Update(platform);
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Platform>> GetByGameKeyAsync(string gameKey)
+    {
+        var platforms = await _unitOfWork.PlatformRepository.GetByGameKeyAsync(gameKey);
+        return platforms;
+    }
 }

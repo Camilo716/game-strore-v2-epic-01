@@ -15,6 +15,10 @@ public static class GameSeed
             GenreSeed.Action,
             GenreSeed.Shooter,
         ],
+        Platforms =
+        [
+            PlatformSeed.Console,
+        ],
     };
 
     public static List<Game> GetGames()

@@ -11,4 +11,6 @@ public class Game
     public string Description { get; set; }
 
     public List<Genre> Genres { get; set; }
+
+    public List<Platform> Platforms { get; set; }
 }

@@ -13,4 +13,6 @@ public interface IPlatformService
     public Task CreateAsync(Platform platform);
 
     public Task UpdateAsync(Platform platform);
+
+    Task<IEnumerable<Platform>> GetByGameKeyAsync(string gameKey);
 }

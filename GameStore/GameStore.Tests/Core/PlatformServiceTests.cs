@@ -74,6 +74,18 @@ public class PlatformServiceTests
             Times.Once());
     }
 
+    [Fact]
+    public async Task GetByGameKey_GivenValidKey_ReturnsPlatforms()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var platformService = new PlatformService(unitOfWork.Object);
+        const string gameKey = "GearsOfWar";
+
+        var platforms = await platformService.GetByGameKeyAsync(gameKey);
+
+        Assert.NotNull(platforms);
+    }
+
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
     {
         var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -82,6 +94,9 @@ public class PlatformServiceTests
             .ReturnsAsync(PlatformSeed.Mobile);
 
         mockUnitOfWork.Setup(m => m.PlatformRepository.GetAllAsync())
+            .ReturnsAsync(PlatformSeed.GetPlatforms());
+
+        mockUnitOfWork.Setup(m => m.PlatformRepository.GetByGameKeyAsync(It.IsAny<string>()))
             .ReturnsAsync(PlatformSeed.GetPlatforms());
 
         mockUnitOfWork.Setup(m => m.PlatformRepository.DeleteByIdAsync(It.IsAny<Guid>()));

@@ -72,4 +72,21 @@ public class PlatformRepositoryTests
         var updatedPlatform = await dbContext.Platforms.FindAsync(platform.Id);
         Assert.Equal(platform, updatedPlatform);
     }
+
+    [Fact]
+    public async Task GetByGameKey_GivenValidKey_ReturnsPlatformsInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        const string gameKey = "GearsOfWar";
+
+        var platforms = await unitOfWork.PlatformRepository.GetByGameKeyAsync(gameKey);
+
+        Assert.NotNull(platforms);
+        Assert.All(
+            platforms,
+            platform => Assert.Contains(
+                gameKey,
+                platform.Games.Select(game => game.Key)));
+    }
 }

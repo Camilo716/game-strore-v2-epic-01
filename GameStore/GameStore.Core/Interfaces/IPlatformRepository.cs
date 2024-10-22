@@ -13,4 +13,6 @@ public interface IPlatformRepository
     public Task InsertAsync(Platform platform);
 
     public void Update(Platform platform);
+
+    Task<IEnumerable<Platform>> GetByGameKeyAsync(string gameKey);
 }
