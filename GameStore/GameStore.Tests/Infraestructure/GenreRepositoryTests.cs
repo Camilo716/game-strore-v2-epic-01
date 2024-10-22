@@ -9,7 +9,7 @@ public class GenreRepositoryTests
     [Fact]
     public async Task GetById_GivenValidId_ReturnsGenresInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
         Guid id = GenreSeed.GetGenres().First().Id;
 
@@ -22,7 +22,7 @@ public class GenreRepositoryTests
     [Fact]
     public async Task GetAll_ReturnsGenresInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
 
         var genre = await unitOfWork.GenreRepository.GetAllAsync();
@@ -34,7 +34,7 @@ public class GenreRepositoryTests
     [Fact]
     public async Task GetByParentId_GivenValidParentId_ReturnsChildrenGenresInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
 
         var childrenGenres = await unitOfWork.GenreRepository.GetByParentIdAsync(GenreSeed.Action.Id);
@@ -46,7 +46,7 @@ public class GenreRepositoryTests
     [Fact]
     public async Task Delete_GivenValidId_DeletesGenreInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
         Guid id = GenreSeed.GetGenres().First().Id;
 
@@ -60,7 +60,7 @@ public class GenreRepositoryTests
     [Fact]
     public async Task Insert_GivenValidGenre_InsertsGenreInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
         var validGenre = new Genre() { Name = "Adventure" };
 
@@ -73,9 +73,9 @@ public class GenreRepositoryTests
     [Fact]
     public async Task Update_GivenValidGenre_UpdatesGenreInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
-        var genre = GenreSeed.GetGenres().First();
+        var genre = await dbContext.Genres.FindAsync(GenreSeed.Action.Id);
         genre.Name = "Adventure";
 
         unitOfWork.GenreRepository.Update(genre);
@@ -83,5 +83,22 @@ public class GenreRepositoryTests
 
         var updatedGenre = await dbContext.Genres.FindAsync(genre.Id);
         Assert.Equal(genre, updatedGenre);
+    }
+
+    [Fact]
+    public async Task GetByGameKey_GivenValidKey_ReturnsGenresInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        const string gameKey = "GearsOfWar";
+
+        var genres = await unitOfWork.GenreRepository.GetByGameKeyAsync(gameKey);
+
+        Assert.NotNull(genres);
+        Assert.All(
+            genres,
+            genre => Assert.Contains(
+                gameKey,
+                genre.Games.Select(game => game.Key)));
     }
 }

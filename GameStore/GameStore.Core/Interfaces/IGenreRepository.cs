@@ -15,4 +15,6 @@ public interface IGenreRepository
     public Task InsertAsync(Genre genre);
 
     public void Update(Genre genre);
+
+    Task<IEnumerable<Genre>> GetByGameKeyAsync(string gameKey);
 }

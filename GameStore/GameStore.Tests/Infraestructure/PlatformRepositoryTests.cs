@@ -10,7 +10,7 @@ public class PlatformRepositoryTests
     [Fact]
     public async Task GetById_GivenValidId_ReturnsPlatformInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var platformRepository = new PlatformRepository(dbContext);
         Guid id = PlatformSeed.GetPlatforms().First().Id;
 
@@ -23,7 +23,7 @@ public class PlatformRepositoryTests
     [Fact]
     public async Task GetAll_ReturnsPlatformsInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var platformRepository = new PlatformRepository(dbContext);
 
         var platform = await platformRepository.GetAllAsync();
@@ -35,7 +35,7 @@ public class PlatformRepositoryTests
     [Fact]
     public async Task Delete_GivenValidId_DeletesPlatformInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
         Guid id = PlatformSeed.GetPlatforms().First().Id;
 
@@ -48,7 +48,7 @@ public class PlatformRepositoryTests
     [Fact]
     public async Task Insert_GivenValidPlatform_InsertsPlatformInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
         var validPlatform = new Platform() { Type = "Virtual Reality" };
 
@@ -61,9 +61,9 @@ public class PlatformRepositoryTests
     [Fact]
     public async Task Update_GivenValidPlatform_UpdatesPlatformInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
-        var platform = PlatformSeed.GetPlatforms().First();
+        var platform = await dbContext.Platforms.FindAsync(PlatformSeed.Mobile.Id);
         platform.Type = "Virtual Reality";
 
         unitOfWork.PlatformRepository.Update(platform);

@@ -15,4 +15,6 @@ public interface IGenreService
     Task CreateAsync(Genre genre);
 
     Task UpdateAsync(Genre genre);
+
+    Task<IEnumerable<Genre>> GetByGameKeyAsync(string gameKey);
 }

@@ -6,5 +6,7 @@ public interface IUnitOfWork
 
     public IGenreRepository GenreRepository { get; }
 
+    public IGameRepository GameRepository { get; }
+
     Task SaveChangesAsync();
 }

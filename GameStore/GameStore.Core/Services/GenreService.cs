@@ -40,4 +40,10 @@ public class GenreService(IUnitOfWork unitOfWork)
         _unitOfWork.GenreRepository.Update(genre);
         await _unitOfWork.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Genre>> GetByGameKeyAsync(string gameKey)
+    {
+        var genres = await _unitOfWork.GenreRepository.GetByGameKeyAsync(gameKey);
+        return genres;
+    }
 }

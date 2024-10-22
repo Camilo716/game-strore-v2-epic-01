@@ -6,16 +6,16 @@ namespace GameStore.Tests;
 
 internal static class UnitTestHelper
 {
-    internal static DbContextOptions<GameStoreDbContext> GetUnitTestDbOptions()
+    internal static GameStoreDbContext GetUnitTestDbContext()
     {
         var options = new DbContextOptionsBuilder<GameStoreDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .EnableSensitiveDataLogging()
             .Options;
 
-        using var context = new GameStoreDbContext(options);
+        var context = new GameStoreDbContext(options);
         DbSeeder.SeedData(context);
 
-        return options!;
+        return context!;
     }
 }

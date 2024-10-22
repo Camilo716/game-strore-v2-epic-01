@@ -8,7 +8,7 @@ public class GameRepositoryTests
     [Fact]
     public async Task GetAll_ReturnsGamesInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
 
         var game = await unitOfWork.GameRepository.GetAllAsync();
@@ -20,13 +20,26 @@ public class GameRepositoryTests
     [Fact]
     public async Task GetById_GivenValidId_ReturnsGamesInDatabase()
     {
-        var dbContext = new GameStoreDbContext(UnitTestHelper.GetUnitTestDbOptions());
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
         Guid id = GameSeed.GearsOfWar.Id;
 
-        var genre = await unitOfWork.GameRepository.GetByIdAsync(id);
+        var game = await unitOfWork.GameRepository.GetByIdAsync(id);
 
-        Assert.NotNull(genre);
-        Assert.Equal(id, genre.Id);
+        Assert.NotNull(game);
+        Assert.Equal(id, game.Id);
+    }
+
+    [Fact]
+    public async Task GetByKey_GivenValidKey_ReturnsGameInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        const string key = "GearsOfWar";
+
+        var game = await unitOfWork.GameRepository.GetByKeyAsync(key);
+
+        Assert.NotNull(game);
+        Assert.Equal(key, game.Key);
     }
 }

@@ -93,6 +93,18 @@ public class GenreServiceTest
         unitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once());
     }
 
+    [Fact]
+    public async Task GetByGameKey_GivenValidKey_ReturnsGenres()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var genreService = new GenreService(unitOfWork.Object);
+        const string gameKey = "GearsOfWar";
+
+        var genres = await genreService.GetByGameKeyAsync(gameKey);
+
+        Assert.NotNull(genres);
+    }
+
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
     {
         var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -101,6 +113,9 @@ public class GenreServiceTest
             .ReturnsAsync(GenreSeed.Action);
 
         mockUnitOfWork.Setup(m => m.GenreRepository.GetAllAsync())
+            .ReturnsAsync(GenreSeed.GetGenres());
+
+        mockUnitOfWork.Setup(m => m.GenreRepository.GetByGameKeyAsync(It.IsAny<string>()))
             .ReturnsAsync(GenreSeed.GetGenres());
 
         return mockUnitOfWork;
