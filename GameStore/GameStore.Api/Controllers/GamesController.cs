@@ -21,7 +21,8 @@ public class GamesController(
     public async Task<ActionResult<Game>> Get()
     {
         var games = await _gameService.GetAllAsync();
-        return Ok(games);
+        var response = games.Select(g => new GameResponseDto(g));
+        return Ok(response);
     }
 
     [HttpGet]
