@@ -7,10 +7,22 @@ namespace GameStore.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class GamesController(IGenreService genreService, IPlatformService platformService) : ControllerBase
+public class GamesController(
+    IGameService gameService,
+    IGenreService genreService,
+    IPlatformService platformService)
+    : ControllerBase
 {
+    private readonly IGameService _gameService = gameService;
     private readonly IGenreService _genreService = genreService;
     private readonly IPlatformService _platformService = platformService;
+
+    [HttpGet]
+    public async Task<ActionResult<Game>> Get()
+    {
+        var games = await _gameService.GetAllAsync();
+        return Ok(games);
+    }
 
     [HttpGet]
     [Route("{key}/genres")]

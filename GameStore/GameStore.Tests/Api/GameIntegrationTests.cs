@@ -1,9 +1,21 @@
 using GameStore.Core.Models;
+using GameStore.Tests.Seed;
 
 namespace GameStore.Tests.Api;
 
 public class GameIntegrationTests : BaseIntegrationTest
 {
+    [Fact]
+    public async Task GetAll_WithoutPagination_ReturnsAllGames()
+    {
+        var response = await HttpClient.GetAsync("api/games");
+
+        response.EnsureSuccessStatusCode();
+        var games = await HttpHelper.GetModelFromHttpResponseAsync<IEnumerable<Game>>(response);
+        Assert.NotNull(games);
+        Assert.Equal(games.Count(), GameSeed.GetGames().Count);
+    }
+
     [Fact]
     public async Task GetGenresByGameKey_GivenValidKey_ReturnsSuccess()
     {
