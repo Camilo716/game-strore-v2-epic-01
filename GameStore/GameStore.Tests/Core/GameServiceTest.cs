@@ -57,6 +57,19 @@ public class GameServiceTest
         Assert.Equal(expectedGeneratedKey, createdGame?.Key);
     }
 
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesGame()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        Guid id = GameSeed.GetGames().First().Id;
+        var gameService = new GameService(unitOfWork.Object);
+
+        await gameService.DeleteAsync(id);
+
+        unitOfWork.Verify(m => m.GameRepository.DeleteByIdAsync(id), Times.Once());
+        unitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once());
+    }
+
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
     {
         var mockUnitOfWork = new Mock<IUnitOfWork>();

@@ -11,4 +11,6 @@ public interface IGameRepository
     public Task<Game> GetByKeyAsync(string key);
 
     public Task InsertAsync(Game game);
+
+    Task DeleteByIdAsync(Guid id);
 }

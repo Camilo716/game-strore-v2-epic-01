@@ -58,4 +58,12 @@ public class GamesController(
         // TODO: Use GetById when implemented
         return CreatedAtAction(nameof(Get), value: game);
     }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<ActionResult> Delete([FromRoute] Guid id)
+    {
+        await _gameService.DeleteAsync(id);
+        return NoContent();
+    }
 }

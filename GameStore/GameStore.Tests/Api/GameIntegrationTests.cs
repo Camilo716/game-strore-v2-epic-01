@@ -55,6 +55,17 @@ public class GameIntegrationTests : BaseIntegrationTest
     }
 
     [Fact]
+    public async Task Delete_GivenValidId_DeletesgGame()
+    {
+        Guid id = GameSeed.GearsOfWar.Id;
+
+        var response = await HttpClient.DeleteAsync($"api/games/{id}");
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(GameSeed.GetGames().Count - 1, DbContext.Games.Count());
+    }
+
+    [Fact]
     public async Task Post_GivenValidGame_CreatesGame()
     {
         GamePostRequest game = new()

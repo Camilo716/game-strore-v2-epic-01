@@ -23,6 +23,12 @@ public class GameService
         return games;
     }
 
+    public async Task DeleteAsync(Guid id)
+    {
+        await _unitOfWork.GameRepository.DeleteByIdAsync(id);
+        await _unitOfWork.SaveChangesAsync();
+    }
+
     private static void GenerateGameKeyIfNotProvided(Game game)
     {
         if (!string.IsNullOrWhiteSpace(game.Key))

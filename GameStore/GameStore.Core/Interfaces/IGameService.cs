@@ -7,4 +7,6 @@ public interface IGameService
     public Task<IEnumerable<Game>> GetAllAsync();
 
     public Task CreateAsync(Game game);
+
+    public Task DeleteAsync(Guid id);
 }

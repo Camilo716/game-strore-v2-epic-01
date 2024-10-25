@@ -65,4 +65,18 @@ public class GameRepositoryTests
 
         Assert.Equal(GameSeed.GetGames().Count + 1, dbContext.Games.Count());
     }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesGameInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        Guid id = GameSeed.GetGames().First().Id;
+
+        await unitOfWork.GameRepository.DeleteByIdAsync(id);
+        await unitOfWork.SaveChangesAsync();
+
+        var expectedGamesInDb = GameSeed.GetGames().Count - 1;
+        Assert.Equal(expectedGamesInDb, dbContext.Games.Count());
+    }
 }
