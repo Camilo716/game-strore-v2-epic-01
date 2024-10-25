@@ -1,7 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
-using GameStore.Api.Dtos;
+using GameStore.Api.Dtos.GameDtos;
 using GameStore.Core.Models;
+using GameStore.Tests.Api.ClassData;
 using GameStore.Tests.Seed;
 
 namespace GameStore.Tests.Api;
@@ -56,14 +57,14 @@ public class GameIntegrationTests : BaseIntegrationTest
     [Fact]
     public async Task Post_GivenValidGame_CreatesGame()
     {
-        GameCreationDto game = new()
+        GamePostRequest game = new()
         {
-            Game = new Game() { Name = "Halo3", Key = "Halo3" },
-            GenresIds =
+            Game = new SimpleGameDto() { Name = "Halo3", Key = "Halo3" },
+            Genres =
             [
                 GenreSeed.Action.Id,
             ],
-            PlatformsIds =
+            Platforms =
             [
                 PlatformSeed.Console.Id,
             ],
@@ -73,5 +74,14 @@ public class GameIntegrationTests : BaseIntegrationTest
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.Equal(GameSeed.GetGames().Count + 1, DbContext.Games.Count());
+    }
+
+    [Theory]
+    [ClassData(typeof(InvalidGamesPostRequestTestData))]
+    public async Task Post_GivenInvalidGame_ReturnsBadRequest(GamePostRequest invalidGameRequest)
+    {
+        var response = await HttpClient.PostAsJsonAsync("api/games", invalidGameRequest);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 }

@@ -1,5 +1,5 @@
 using AutoMapper;
-using GameStore.Api.Dtos;
+using GameStore.Api.Dtos.GameDtos;
 using GameStore.Api.Dtos.GenreDtos;
 using GameStore.Api.Dtos.PlatformDtos;
 using GameStore.Core.Interfaces;
@@ -49,9 +49,9 @@ public class GamesController(
     }
 
     [HttpPost]
-    public async Task<ActionResult<Game>> Post([FromBody] GameCreationDto gameCreationDto)
+    public async Task<ActionResult<Game>> Post([FromBody] GamePostRequest gamePostDto)
     {
-        var game = _mapper.Map<Game>(gameCreationDto);
+        var game = _mapper.Map<Game>(gamePostDto);
 
         await _gameService.CreateAsync(game);
 
