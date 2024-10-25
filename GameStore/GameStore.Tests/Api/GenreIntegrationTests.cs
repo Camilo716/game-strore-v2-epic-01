@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using GameStore.Api.Dtos;
+using GameStore.Api.Dtos.GenresDtos;
 using GameStore.Core.Models;
 using GameStore.Tests.Seed;
 
@@ -53,9 +53,9 @@ public class GenreIntegrationTests : BaseIntegrationTest
     [Fact]
     public async Task Post_GivenValidGenre_CreatesGenre()
     {
-        var genre = new GenreCreationDto()
+        var genre = new GenrePostRequest()
         {
-            Genre = new Genre() { Name = "Adventure" },
+            Genre = new SimpleGenreDto() { Name = "Adventure" },
         };
 
         var response = await HttpClient.PostAsJsonAsync("api/genres", genre);
@@ -68,10 +68,15 @@ public class GenreIntegrationTests : BaseIntegrationTest
     public async Task Put_GivenValidGenre_UpdatesGenre()
     {
         var genre = GenreSeed.GetGenres().First();
-        genre.Name = "Adventure";
-        var request = new GenreCreationDto()
+        SimpleGenreWithIdDto genreDto = new()
         {
-            Genre = genre,
+            Id = genre.Id,
+            Name = "Adventure",
+            ParentGenreId = genre.ParentGenreId,
+        };
+        GenrePutRequest request = new()
+        {
+            Genre = genreDto,
         };
 
         var response = await HttpClient.PutAsJsonAsync("api/genres", request);

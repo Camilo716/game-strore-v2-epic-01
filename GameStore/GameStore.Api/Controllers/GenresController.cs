@@ -1,4 +1,5 @@
 using GameStore.Api.Dtos;
+using GameStore.Api.Dtos.GenresDtos;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -47,12 +48,11 @@ public class GenresController(IGenreService genreService)
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody] GenreCreationDto genreCreationDto)
+    public async Task<ActionResult> Post([FromBody] GenrePostRequest genrePostDto)
     {
         var genre = new Genre()
         {
-            Id = genreCreationDto.Genre.Id,
-            Name = genreCreationDto.Genre.Name,
+            Name = genrePostDto.Genre.Name,
         };
 
         await _genreService.CreateAsync(genre);
@@ -64,12 +64,12 @@ public class GenresController(IGenreService genreService)
     }
 
     [HttpPut]
-    public async Task<ActionResult> Put([FromBody] GenreCreationDto genreUpdateDto)
+    public async Task<ActionResult> Put([FromBody] GenrePutRequest genrePutDto)
     {
         var genre = new Genre()
         {
-            Id = genreUpdateDto.Genre.Id,
-            Name = genreUpdateDto.Genre.Name,
+            Id = genrePutDto.Genre.Id,
+            Name = genrePutDto.Genre.Name,
         };
 
         await _genreService.UpdateAsync(genre);
