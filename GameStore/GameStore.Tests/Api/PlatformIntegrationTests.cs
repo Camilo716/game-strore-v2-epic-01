@@ -89,6 +89,15 @@ public class PlatformIntegrationTests : BaseIntegrationTest
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    [Theory]
+    [MemberData(nameof(InvalidPlatformPutRequests))]
+    public async Task Put_GivenInvalidPlatform_ReturnsBadRequest(PlatformPutRequest invalidPlatformRequest)
+    {
+        var response = await HttpClient.PutAsJsonAsync("api/platforms", invalidPlatformRequest);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
     public static IEnumerable<object[]> InvalidPlatformPostRequests() =>
         [
             [
@@ -101,6 +110,29 @@ public class PlatformIntegrationTests : BaseIntegrationTest
                 new PlatformPostRequest()
                 {
                     Platform = new SimplePlatformDto() { }, // Platform Without Type
+                },
+            ],
+        ];
+
+    public static IEnumerable<object[]> InvalidPlatformPutRequests() =>
+        [
+            [
+                new PlatformPutRequest()
+                {
+                    Platform = null, // Without Platform
+                },
+            ],
+            [
+                new PlatformPutRequest()
+                {
+                    Platform = new SimplePlatformWithIdDto() { Id = PlatformSeed.Mobile.Id }, // Platform Without Type
+                },
+            ],
+            [
+
+                new PlatformPutRequest()
+                {
+                    Platform = new SimplePlatformWithIdDto() { Type = PlatformSeed.Mobile.Type }, // Without Id
                 },
             ],
         ];

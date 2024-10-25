@@ -60,6 +60,11 @@ public class PlatformsController(IPlatformService platformService)
     [HttpPut]
     public async Task<ActionResult> Put([FromBody] PlatformPutRequest platformUpdateDto)
     {
+        if (!platformUpdateDto.IsValid())
+        {
+            return BadRequest();
+        }
+
         var platform = new Platform()
         {
             Id = platformUpdateDto.Platform.Id,
