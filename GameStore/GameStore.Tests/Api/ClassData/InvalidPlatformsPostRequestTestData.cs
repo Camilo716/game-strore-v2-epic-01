@@ -8,17 +8,12 @@ public class InvalidPlatformsPostRequestTestData : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
-        var validPlatform = new SimplePlatformDto()
-        {
-            Type = PlatformSeed.Mobile.Type,
-        };
-
         yield return
         [
             new PlatformPostRequest() { Platform = null }
         ];
 
-        SimplePlatformDto invalidPlatformMissingType = validPlatform;
+        SimplePlatformDto invalidPlatformMissingType = GetValidPlatformDto();
         invalidPlatformMissingType.Type = null;
         yield return
         [
@@ -27,4 +22,12 @@ public class InvalidPlatformsPostRequestTestData : IEnumerable<object[]>
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    private static SimplePlatformDto GetValidPlatformDto()
+    {
+        return new SimplePlatformDto()
+        {
+            Type = PlatformSeed.Mobile.Type,
+        };
+    }
 }

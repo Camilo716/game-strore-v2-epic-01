@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using GameStore.Api.Dtos.GenreDtos;
 using GameStore.Core.Models;
+using GameStore.Tests.Api.ClassData;
 using GameStore.Tests.Seed;
 
 namespace GameStore.Tests.Api;
@@ -81,5 +82,23 @@ public class GenreIntegrationTests : BaseIntegrationTest
         var response = await HttpClient.PutAsJsonAsync("api/genres", request);
 
         response.EnsureSuccessStatusCode();
+    }
+
+    [Theory]
+    [ClassData(typeof(InvalidGenresPostRequestTestData))]
+    public async Task Post_GivenInvalidGenre_ReturnsBadRequest(GenrePostRequest invalidGenreRequest)
+    {
+        var response = await HttpClient.PostAsJsonAsync("api/genres", invalidGenreRequest);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Theory]
+    [ClassData(typeof(InvalidGenresPutRequestTestData))]
+    public async Task Put_GivenInvalidGenre_ReturnsBadRequest(GenrePutRequest invalidGenreRequest)
+    {
+        var response = await HttpClient.PutAsJsonAsync("api/genres", invalidGenreRequest);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 }

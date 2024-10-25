@@ -8,25 +8,19 @@ public class InvalidPlatformsPutRequestTestData : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
-        var validPlatform = new SimplePlatformWithIdDto()
-        {
-            Id = PlatformSeed.Mobile.Id,
-            Type = PlatformSeed.Mobile.Type,
-        };
-
         yield return
         [
             new PlatformPutRequest() { Platform = null }
         ];
 
-        SimplePlatformWithIdDto invalidPlatformMissingType = validPlatform;
+        SimplePlatformWithIdDto invalidPlatformMissingType = GetValidPlatformDto();
         invalidPlatformMissingType.Type = null;
         yield return
         [
             new PlatformPutRequest() { Platform = invalidPlatformMissingType }
         ];
 
-        SimplePlatformWithIdDto invalidPlatformMissingId = validPlatform;
+        SimplePlatformWithIdDto invalidPlatformMissingId = GetValidPlatformDto();
         invalidPlatformMissingId.Id = Guid.Empty;
         yield return
         [
@@ -35,4 +29,13 @@ public class InvalidPlatformsPutRequestTestData : IEnumerable<object[]>
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    private static SimplePlatformWithIdDto GetValidPlatformDto()
+    {
+        return new SimplePlatformWithIdDto()
+        {
+            Id = PlatformSeed.Mobile.Id,
+            Type = PlatformSeed.Mobile.Type,
+        };
+    }
 }

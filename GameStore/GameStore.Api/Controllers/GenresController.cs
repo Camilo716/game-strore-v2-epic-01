@@ -49,6 +49,11 @@ public class GenresController(IGenreService genreService)
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] GenrePostRequest genrePostDto)
     {
+        if (!genrePostDto.IsValid())
+        {
+            return BadRequest();
+        }
+
         var genre = new Genre()
         {
             Name = genrePostDto.Genre.Name,
@@ -65,6 +70,11 @@ public class GenresController(IGenreService genreService)
     [HttpPut]
     public async Task<ActionResult> Put([FromBody] GenrePutRequest genrePutDto)
     {
+        if (!genrePutDto.IsValid())
+        {
+            return BadRequest();
+        }
+
         var genre = new Genre()
         {
             Id = genrePutDto.Genre.Id,
