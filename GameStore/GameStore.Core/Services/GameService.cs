@@ -1,3 +1,4 @@
+using System.Text.Json;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
 
@@ -10,6 +11,8 @@ public class GameService
 
     public async Task CreateAsync(Game game)
     {
+        GenerateGameKeyIfNotProvided(game);
+
         await _unitOfWork.GameRepository.InsertAsync(game);
         await _unitOfWork.SaveChangesAsync();
     }
@@ -18,5 +21,15 @@ public class GameService
     {
         var games = await _unitOfWork.GameRepository.GetAllAsync();
         return games;
+    }
+
+    private static void GenerateGameKeyIfNotProvided(Game game)
+    {
+        if (!string.IsNullOrWhiteSpace(game.Key))
+        {
+            return;
+        }
+
+        game.Key = JsonNamingPolicy.CamelCase.ConvertName(game.Name).Replace(" ", string.Empty);
     }
 }
