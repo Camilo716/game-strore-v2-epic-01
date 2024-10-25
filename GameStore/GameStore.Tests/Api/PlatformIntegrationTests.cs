@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using GameStore.Api.Dtos.PlatformDtos;
 using GameStore.Core.Models;
+using GameStore.Tests.Api.ClassData;
 using GameStore.Tests.Seed;
 
 namespace GameStore.Tests.Api;
@@ -81,7 +82,7 @@ public class PlatformIntegrationTests : BaseIntegrationTest
     }
 
     [Theory]
-    [MemberData(nameof(InvalidPlatformPostRequests))]
+    [ClassData(typeof(InvalidPlatformsPostRequestTestData))]
     public async Task Post_GivenInvalidPlatform_ReturnsBadRequest(PlatformPostRequest invalidPlatformRequest)
     {
         var response = await HttpClient.PostAsJsonAsync("api/platforms", invalidPlatformRequest);
@@ -90,50 +91,11 @@ public class PlatformIntegrationTests : BaseIntegrationTest
     }
 
     [Theory]
-    [MemberData(nameof(InvalidPlatformPutRequests))]
+    [ClassData(typeof(InvalidPlatformsPutRequestTestData))]
     public async Task Put_GivenInvalidPlatform_ReturnsBadRequest(PlatformPutRequest invalidPlatformRequest)
     {
         var response = await HttpClient.PutAsJsonAsync("api/platforms", invalidPlatformRequest);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
-
-    public static IEnumerable<object[]> InvalidPlatformPostRequests() =>
-        [
-            [
-                new PlatformPostRequest()
-                {
-                    Platform = null, // Without Platform
-                },
-            ],
-            [
-                new PlatformPostRequest()
-                {
-                    Platform = new SimplePlatformDto() { }, // Platform Without Type
-                },
-            ],
-        ];
-
-    public static IEnumerable<object[]> InvalidPlatformPutRequests() =>
-        [
-            [
-                new PlatformPutRequest()
-                {
-                    Platform = null, // Without Platform
-                },
-            ],
-            [
-                new PlatformPutRequest()
-                {
-                    Platform = new SimplePlatformWithIdDto() { Id = PlatformSeed.Mobile.Id }, // Platform Without Type
-                },
-            ],
-            [
-
-                new PlatformPutRequest()
-                {
-                    Platform = new SimplePlatformWithIdDto() { Type = PlatformSeed.Mobile.Type }, // Without Id
-                },
-            ],
-        ];
 }
