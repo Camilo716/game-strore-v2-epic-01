@@ -79,4 +79,19 @@ public class GameRepositoryTests
         var expectedGamesInDb = GameSeed.GetGames().Count - 1;
         Assert.Equal(expectedGamesInDb, dbContext.Games.Count());
     }
+
+    [Fact]
+    public async Task Update_GivenValidGame_UpdatesGameInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        var game = await dbContext.Games.FindAsync(GameSeed.GearsOfWar.Id);
+        game.Name = "Gears of War Edited";
+
+        unitOfWork.GameRepository.Update(game);
+        await unitOfWork.SaveChangesAsync();
+
+        var updatedGame = await dbContext.Games.FindAsync(game.Id);
+        Assert.Equal(game, updatedGame);
+    }
 }

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using AutoMapper;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Services;
@@ -21,7 +22,11 @@ public class Startup(IConfiguration configuration)
         services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IGameService, GameService>();
 
-        services.AddControllers();
+        services.AddControllers()
+            .AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

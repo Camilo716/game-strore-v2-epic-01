@@ -16,8 +16,8 @@ public class GameRepository(GameStoreDbContext dbContext)
 
     public override async Task InsertAsync(Game entity)
     {
-        entity.Genres.ForEach(g => DbContext.Entry(entity).State = EntityState.Unchanged);
-        entity.Platforms.ForEach(g => DbContext.Entry(entity).State = EntityState.Unchanged);
+        DbContext.AttachRange(entity.Genres);
+        DbContext.AttachRange(entity.Platforms);
         await base.InsertAsync(entity);
     }
 }

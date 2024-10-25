@@ -13,4 +13,6 @@ public interface IGameRepository
     public Task InsertAsync(Game game);
 
     Task DeleteByIdAsync(Guid id);
+
+    void Update(Game game);
 }

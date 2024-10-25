@@ -59,6 +59,16 @@ public class GamesController(
         return CreatedAtAction(nameof(Get), value: game);
     }
 
+    [HttpPut]
+    public async Task<ActionResult> Put([FromBody] GamePutRequest gamePutRequest)
+    {
+        var game = _mapper.Map<Game>(gamePutRequest);
+
+        await _gameService.UpdateAsync(game);
+
+        return Ok();
+    }
+
     [HttpDelete]
     [Route("{id}")]
     public async Task<ActionResult> Delete([FromRoute] Guid id)

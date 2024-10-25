@@ -87,6 +87,34 @@ public class GameIntegrationTests : BaseIntegrationTest
         Assert.Equal(GameSeed.GetGames().Count + 1, DbContext.Games.Count());
     }
 
+    [Fact]
+    public async Task Put_GivenValidGame_UpdatesGame()
+    {
+        SimpleGameWithIdDto gameDto = new()
+        {
+            Id = GameSeed.GearsOfWar.Id,
+            Name = "Gears of War Edited",
+            Key = GameSeed.GearsOfWar.Key,
+            Description = GameSeed.GearsOfWar.Description,
+        };
+        GamePutRequest request = new()
+        {
+            Game = gameDto,
+            Genres =
+            [
+                GenreSeed.Shooter.Id,
+            ],
+            Platforms =
+            [
+                PlatformSeed.Mobile.Id
+            ],
+        };
+
+        var response = await HttpClient.PutAsJsonAsync("api/games", request);
+
+        response.EnsureSuccessStatusCode();
+    }
+
     [Theory]
     [ClassData(typeof(InvalidGamesPostRequestTestData))]
     public async Task Post_GivenInvalidGame_ReturnsBadRequest(GamePostRequest invalidGameRequest)

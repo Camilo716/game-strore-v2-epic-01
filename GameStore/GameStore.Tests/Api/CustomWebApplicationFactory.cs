@@ -18,6 +18,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             services.AddDbContextPool<GameStoreDbContext>(options =>
             {
                 options.UseInMemoryDatabase(Guid.NewGuid().ToString());
+                options.EnableSensitiveDataLogging();
             });
         });
     }

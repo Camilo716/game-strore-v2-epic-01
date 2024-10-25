@@ -70,6 +70,22 @@ public class GameServiceTest
         unitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once());
     }
 
+    [Fact]
+    public async Task Update_GivenValidGame_UpdatesGame()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var game = new Game() { Name = "Adventure" };
+        var gameService = new GameService(unitOfWork.Object);
+
+        await gameService.UpdateAsync(game);
+
+        unitOfWork.Verify(
+            m => m.GameRepository.Update(It.Is<Game>(p => p.Name == game.Name)),
+            Times.Once());
+
+        unitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once());
+    }
+
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
     {
         var mockUnitOfWork = new Mock<IUnitOfWork>();

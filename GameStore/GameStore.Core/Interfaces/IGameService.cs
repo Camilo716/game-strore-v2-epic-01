@@ -9,4 +9,6 @@ public interface IGameService
     public Task CreateAsync(Game game);
 
     public Task DeleteAsync(Guid id);
+
+    Task UpdateAsync(Game game);
 }
