@@ -1,5 +1,7 @@
 using AutoMapper;
 using GameStore.Api.Dtos;
+using GameStore.Api.Dtos.GenreDtos;
+using GameStore.Api.Dtos.PlatformDtos;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
 using Microsoft.AspNetCore.Mvc;

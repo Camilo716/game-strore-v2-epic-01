@@ -1,4 +1,4 @@
-namespace GameStore.Api.Dtos.GenresDtos;
+namespace GameStore.Api.Dtos.GenreDtos;
 
 public class GenrePostRequest
 {

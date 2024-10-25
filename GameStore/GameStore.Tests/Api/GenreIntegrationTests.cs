@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using GameStore.Api.Dtos.GenresDtos;
+using GameStore.Api.Dtos.GenreDtos;
 using GameStore.Core.Models;
 using GameStore.Tests.Seed;
 
@@ -67,12 +67,11 @@ public class GenreIntegrationTests : BaseIntegrationTest
     [Fact]
     public async Task Put_GivenValidGenre_UpdatesGenre()
     {
-        var genre = GenreSeed.GetGenres().First();
         SimpleGenreWithIdDto genreDto = new()
         {
-            Id = genre.Id,
+            Id = GenreSeed.Action.Id,
             Name = "Adventure",
-            ParentGenreId = genre.ParentGenreId,
+            ParentGenreId = GenreSeed.Action.ParentGenreId,
         };
         GenrePutRequest request = new()
         {

@@ -1,5 +1,4 @@
-using GameStore.Api.Dtos;
-using GameStore.Api.Dtos.GenresDtos;
+using GameStore.Api.Dtos.GenreDtos;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
 using Microsoft.AspNetCore.Mvc;

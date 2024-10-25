@@ -1,6 +1,6 @@
 using GameStore.Core.Models;
 
-namespace GameStore.Api.Dtos;
+namespace GameStore.Api.Dtos.GenreDtos;
 
 public class GenreResponseDto(Genre genre)
 {

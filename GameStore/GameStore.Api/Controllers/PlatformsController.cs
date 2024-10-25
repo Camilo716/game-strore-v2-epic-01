@@ -1,4 +1,4 @@
-using GameStore.Api.Dtos;
+using GameStore.Api.Dtos.PlatformDtos;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -39,11 +39,10 @@ public class PlatformsController(IPlatformService platformService)
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody] PlatformCreationDto platformCreationDto)
+    public async Task<ActionResult> Post([FromBody] PlatformPostRequest platformCreationDto)
     {
         var platform = new Platform()
         {
-            Id = platformCreationDto.Platform.Id,
             Type = platformCreationDto.Platform.Type,
         };
 
@@ -54,7 +53,7 @@ public class PlatformsController(IPlatformService platformService)
     }
 
     [HttpPut]
-    public async Task<ActionResult> Put([FromBody] PlatformCreationDto platformUpdateDto)
+    public async Task<ActionResult> Put([FromBody] PlatformPutRequest platformUpdateDto)
     {
         var platform = new Platform()
         {

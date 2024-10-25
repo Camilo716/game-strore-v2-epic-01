@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using GameStore.Api.Dtos;
+using GameStore.Api.Dtos.PlatformDtos;
 using GameStore.Core.Models;
 using GameStore.Tests.Seed;
 
@@ -51,9 +51,9 @@ public class PlatformIntegrationTests : BaseIntegrationTest
     [Fact]
     public async Task Post_GivenValidPlatform_CreatesPlatform()
     {
-        var validPlatform = new PlatformCreationDto()
+        PlatformPostRequest validPlatform = new()
         {
-            Platform = new Platform() { Type = "Virtual Reality" },
+            Platform = new SimplePlatformDto() { Type = "Virtual Reality" },
         };
 
         var response = await HttpClient.PostAsJsonAsync("api/platforms", validPlatform);
@@ -65,11 +65,14 @@ public class PlatformIntegrationTests : BaseIntegrationTest
     [Fact]
     public async Task Put_GivenValidPlatform_UpdatesPlatform()
     {
-        var platform = PlatformSeed.GetPlatforms().First();
-        platform.Type = "Virtual Reality";
-        var request = new PlatformCreationDto()
+        SimplePlatformWithIdDto platformDto = new()
         {
-            Platform = platform,
+            Id = PlatformSeed.Mobile.Id,
+            Type = "Virtual Reality",
+        };
+        PlatformPutRequest request = new()
+        {
+            Platform = platformDto,
         };
 
         var response = await HttpClient.PutAsJsonAsync("api/platforms", request);
