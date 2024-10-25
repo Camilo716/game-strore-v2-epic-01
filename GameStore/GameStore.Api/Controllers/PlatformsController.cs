@@ -41,6 +41,11 @@ public class PlatformsController(IPlatformService platformService)
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] PlatformPostRequest platformCreationDto)
     {
+        if (!platformCreationDto.IsValid())
+        {
+            return BadRequest();
+        }
+
         var platform = new Platform()
         {
             Type = platformCreationDto.Platform.Type,

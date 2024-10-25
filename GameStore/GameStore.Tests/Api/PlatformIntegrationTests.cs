@@ -79,4 +79,29 @@ public class PlatformIntegrationTests : BaseIntegrationTest
 
         response.EnsureSuccessStatusCode();
     }
+
+    [Theory]
+    [MemberData(nameof(InvalidPlatformPostRequests))]
+    public async Task Post_GivenInvalidPlatform_ReturnsBadRequest(PlatformPostRequest invalidPlatformRequest)
+    {
+        var response = await HttpClient.PostAsJsonAsync("api/platforms", invalidPlatformRequest);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    public static IEnumerable<object[]> InvalidPlatformPostRequests() =>
+        [
+            [
+                new PlatformPostRequest()
+                {
+                    Platform = null, // Without Platform
+                },
+            ],
+            [
+                new PlatformPostRequest()
+                {
+                    Platform = new SimplePlatformDto() { }, // Platform Without Type
+                },
+            ],
+        ];
 }
