@@ -1,3 +1,4 @@
+using GameStore.Core.Models;
 using GameStore.Infraestructure.Data;
 using GameStore.Tests.Seed;
 
@@ -41,5 +42,27 @@ public class GameRepositoryTests
 
         Assert.NotNull(game);
         Assert.Equal(key, game.Key);
+    }
+
+    [Fact]
+    public async Task Insert_GivenValidGame_InsertsGameInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+
+        var validGame = new Game()
+        {
+            Name = "Halo 3",
+            Key = "Halo3",
+            Genres =
+            [
+                await dbContext.Genres.FindAsync(GenreSeed.Action.Id)
+            ],
+        };
+
+        await unitOfWork.GameRepository.InsertAsync(validGame);
+        await unitOfWork.SaveChangesAsync();
+
+        Assert.Equal(GameSeed.GetGames().Count + 1, dbContext.Games.Count());
     }
 }

@@ -33,7 +33,7 @@ public class BaseRepository<TEntity>
         DbContext.Remove(dbRecord);
     }
 
-    public async Task InsertAsync(TEntity entity)
+    public virtual async Task InsertAsync(TEntity entity)
     {
         await DbSet.AddAsync(entity);
     }

@@ -9,4 +9,6 @@ public interface IGameRepository
     public Task<IEnumerable<Game>> GetAllAsync();
 
     public Task<Game> GetByKeyAsync(string key);
+
+    public Task InsertAsync(Game game);
 }

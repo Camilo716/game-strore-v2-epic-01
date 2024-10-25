@@ -1,3 +1,4 @@
+using AutoMapper;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Services;
 using GameStore.Infraestructure.Data;
@@ -14,6 +15,7 @@ public class Startup(IConfiguration configuration)
         Infraestructure.Dependences.ConfigureServices(Configuration, services);
 
         services.AddSwaggerGen();
+        services.AddAutoMapper(typeof(AutoMapperProfile));
 
         services.AddScoped<IPlatformService, PlatformService>();
         services.AddScoped<IGenreService, GenreService>();

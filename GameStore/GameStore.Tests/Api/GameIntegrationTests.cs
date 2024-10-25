@@ -1,3 +1,6 @@
+using System.Net;
+using System.Net.Http.Json;
+using GameStore.Api.Dtos;
 using GameStore.Core.Models;
 using GameStore.Tests.Seed;
 
@@ -48,5 +51,27 @@ public class GameIntegrationTests : BaseIntegrationTest
             platform => Assert.Contains(
                 gameKey,
                 platform.Games.Select(game => game.Key)));
+    }
+
+    [Fact]
+    public async Task Post_GivenValidGame_CreatesGame()
+    {
+        GameCreationDto game = new()
+        {
+            Game = new Game() { Name = "Halo3", Key = "Halo3" },
+            GenresIds =
+            [
+                GenreSeed.Action.Id,
+            ],
+            PlatformsIds =
+            [
+                PlatformSeed.Console.Id,
+            ],
+        };
+
+        var response = await HttpClient.PostAsJsonAsync("api/games", game);
+
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(GameSeed.GetGames().Count + 1, DbContext.Games.Count());
     }
 }

@@ -13,4 +13,11 @@ public class GameRepository(GameStoreDbContext dbContext)
     {
         return await DbSet.FirstOrDefaultAsync(x => x.Key == key);
     }
+
+    public override async Task InsertAsync(Game entity)
+    {
+        entity.Genres.ForEach(g => DbContext.Entry(entity).State = EntityState.Unchanged);
+        entity.Platforms.ForEach(g => DbContext.Entry(entity).State = EntityState.Unchanged);
+        await base.InsertAsync(entity);
+    }
 }
