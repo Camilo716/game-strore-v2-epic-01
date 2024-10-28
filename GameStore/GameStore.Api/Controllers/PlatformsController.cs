@@ -1,3 +1,4 @@
+using GameStore.Api.Dtos.GameDtos;
 using GameStore.Api.Dtos.PlatformDtos;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
@@ -29,16 +30,16 @@ public class PlatformsController(
     public async Task<ActionResult<IEnumerable<Game>>> GetGamesByPlatformId([FromRoute] Guid id)
     {
         var games = await _gameService.GetByPlatformIdAsync(id);
-
-        return Ok(games);
+        var response = games.Select(g => new GameResponseDto(g));
+        return Ok(response);
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Platform>>> GetAll()
     {
         var platforms = await _platformService.GetAllAsync();
-
-        return Ok(platforms);
+        var response = platforms.Select(p => new PlatformResponseDto(p));
+        return Ok(response);
     }
 
     [HttpDelete]

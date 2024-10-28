@@ -1,3 +1,4 @@
+using GameStore.Api.Dtos.GameDtos;
 using GameStore.Api.Dtos.GenreDtos;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
@@ -29,7 +30,8 @@ public class GenresController(
     public async Task<ActionResult<IEnumerable<Game>>> GetGamesByGenreId([FromRoute] Guid id)
     {
         var games = await _gameService.GetByGenreIdAsync(id);
-        return Ok(games);
+        var response = games.Select(g => new GameResponseDto(g));
+        return Ok(response);
     }
 
     [HttpGet]

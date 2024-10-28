@@ -40,7 +40,7 @@ public class GamesController(
 
     [HttpGet]
     [Route("{key}")]
-    public async Task<ActionResult<Game>> GetAsync([FromRoute] string key)
+    public async Task<ActionResult<Game>> GetByKeyAsync([FromRoute] string key)
     {
         var game = await _gameService.GetByKeyAsync(key);
         return Ok(new GameResponseDto(game));
