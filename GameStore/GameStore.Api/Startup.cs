@@ -21,6 +21,7 @@ public class Startup(IConfiguration configuration)
         services.AddScoped<IPlatformService, PlatformService>();
         services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IGameService, GameService>();
+        services.AddScoped<IGameFileService, GameTextFileService>();
 
         services.AddControllers()
             .AddJsonOptions(opt =>

@@ -13,12 +13,14 @@ namespace GameStore.Api.Controllers;
 public class GamesController(
     IMapper mapper,
     IGameService gameService,
+    IGameFileService gameFileService,
     IGenreService genreService,
     IPlatformService platformService)
     : ControllerBase
 {
     private readonly IMapper _mapper = mapper;
     private readonly IGameService _gameService = gameService;
+    private readonly IGameFileService _gameFileService = gameFileService;
     private readonly IGenreService _genreService = genreService;
     private readonly IPlatformService _platformService = platformService;
 
@@ -93,5 +95,14 @@ public class GamesController(
     {
         await _gameService.DeleteAsync(id);
         return NoContent();
+    }
+
+    [HttpGet]
+    [Route("{key}/file")]
+    public async Task<ActionResult> DownloadGame([FromRoute] string key)
+    {
+        var gameFile = await _gameFileService.GetByKeyAsync(key);
+
+        return File(gameFile.Content, gameFile.ContentType, gameFile.FileName);
     }
 }
