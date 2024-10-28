@@ -31,10 +31,18 @@ public class GamesController(
     }
 
     [HttpGet]
-    [Route("{id}")]
+    [Route("find/{id}")]
     public async Task<ActionResult<Game>> GetAsync([FromRoute] Guid id)
     {
         var game = await _gameService.GetByIdAsync(id);
+        return Ok(new GameResponseDto(game));
+    }
+
+    [HttpGet]
+    [Route("{key}")]
+    public async Task<ActionResult<Game>> GetAsync([FromRoute] string key)
+    {
+        var game = await _gameService.GetByKeyAsync(key);
         return Ok(new GameResponseDto(game));
     }
 

@@ -22,6 +22,19 @@ public class GameServiceTest
     }
 
     [Fact]
+    public async Task GetByKey_GivenValidKey_ReturnsGameModel()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var gameService = new GameService(unitOfWork.Object);
+        string key = GameSeed.GearsOfWar.Key;
+
+        var game = await gameService.GetByKeyAsync(key);
+
+        Assert.NotNull(game);
+        Assert.Equal(game.Key, key);
+    }
+
+    [Fact]
     public async Task GetAll_ReturnsGamesModels()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
@@ -107,6 +120,9 @@ public class GameServiceTest
             .ReturnsAsync(GameSeed.GetGames());
 
         mockUnitOfWork.Setup(m => m.GameRepository.GetByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(GameSeed.GearsOfWar);
+
+        mockUnitOfWork.Setup(m => m.GameRepository.GetByKeyAsync(It.IsAny<string>()))
             .ReturnsAsync(GameSeed.GearsOfWar);
 
         return mockUnitOfWork;

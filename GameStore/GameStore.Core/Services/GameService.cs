@@ -40,6 +40,11 @@ public class GameService
         return await _unitOfWork.GameRepository.GetByIdAsync(id);
     }
 
+    public async Task<Game> GetByKeyAsync(string key)
+    {
+        return await _unitOfWork.GameRepository.GetByKeyAsync(key);
+    }
+
     private static void GenerateGameKeyIfNotProvided(Game game)
     {
         if (!string.IsNullOrWhiteSpace(game.Key))

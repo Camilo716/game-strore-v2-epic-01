@@ -14,7 +14,17 @@ public class GameIntegrationTests : BaseIntegrationTest
     {
         Guid id = GameSeed.GearsOfWar.Id;
 
-        var response = await HttpClient.GetAsync($"api/games/{id}");
+        var response = await HttpClient.GetAsync($"api/games/find/{id}");
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task GetByKey_GivenValidKey_ReturnsSuccess()
+    {
+        string key = GameSeed.GearsOfWar.Key;
+
+        var response = await HttpClient.GetAsync($"api/games/{key}");
 
         response.EnsureSuccessStatusCode();
     }

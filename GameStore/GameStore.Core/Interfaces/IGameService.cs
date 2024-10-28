@@ -6,6 +6,8 @@ public interface IGameService
 {
     public Task<Game> GetByIdAsync(Guid id);
 
+    public Task<Game> GetByKeyAsync(string key);
+
     public Task<IEnumerable<Game>> GetAllAsync();
 
     public Task CreateAsync(Game game);
