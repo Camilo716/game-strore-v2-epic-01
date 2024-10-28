@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.Json;
 using GameStore.Core.Dtos;
 using GameStore.Core.Interfaces;
@@ -13,16 +12,13 @@ public class GameTextFileService(IUnitOfWork unitOfWork)
     public async Task<GameFile> GetByKeyAsync(string key)
     {
         var game = await _unitOfWork.GameRepository.GetByKeyAsync(key);
+        byte[] content = JsonSerializer.SerializeToUtf8Bytes(game);
 
-        string fileName = $"_{game.Key}.txt";
-        string content = $"{fileName}\n{JsonSerializer.Serialize(game)}";
-
-        var serializedGame = Encoding.UTF8.GetBytes(content);
         return new GameFile()
         {
-            FileName = fileName,
+            FileName = $"_{game.Key}.txt",
             ContentType = "application/octet-stream",
-            Content = new MemoryStream(serializedGame),
+            Content = new MemoryStream(content),
         };
     }
 }
