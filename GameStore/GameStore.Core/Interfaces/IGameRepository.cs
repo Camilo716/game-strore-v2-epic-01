@@ -17,4 +17,6 @@ public interface IGameRepository
     Task DeleteByIdAsync(Guid id);
 
     void Update(Game game);
+
+    Task<IEnumerable<Game>> GetByGenreIdAsync(Guid genreId);
 }

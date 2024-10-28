@@ -10,6 +10,8 @@ public interface IGameService
 
     public Task<IEnumerable<Game>> GetByPlatformIdAsync(Guid platformId);
 
+    public Task<IEnumerable<Game>> GetByGenreIdAsync(Guid genreId);
+
     public Task<IEnumerable<Game>> GetAllAsync();
 
     public Task CreateAsync(Game game);

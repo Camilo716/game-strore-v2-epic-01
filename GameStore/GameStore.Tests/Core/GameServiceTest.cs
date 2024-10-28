@@ -47,6 +47,18 @@ public class GameServiceTest
     }
 
     [Fact]
+    public async Task GetByGenreId_GivenValidGenreId_ReturnsGames()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var gameService = new GameService(unitOfWork.Object);
+        Guid genreId = GenreSeed.Action.Id;
+
+        IEnumerable<Game> games = await gameService.GetByGenreIdAsync(genreId);
+
+        Assert.NotNull(games);
+    }
+
+    [Fact]
     public async Task GetAll_ReturnsGamesModels()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();

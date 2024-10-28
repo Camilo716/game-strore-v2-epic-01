@@ -22,6 +22,14 @@ public class GameRepository(GameStoreDbContext dbContext)
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Game>> GetByGenreIdAsync(Guid genreId)
+    {
+        return await DbSet
+            .Include(game => game.Genres)
+            .Where(game => game.Genres.Select(g => g.Id).Contains(genreId))
+            .ToListAsync();
+    }
+
     public override async Task InsertAsync(Game entity)
     {
         DbContext.AttachRange(entity.Genres);

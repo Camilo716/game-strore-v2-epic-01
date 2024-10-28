@@ -41,6 +41,21 @@ public class GenreIntegrationTests : BaseIntegrationTest
     }
 
     [Fact]
+    public async Task GetGamesByGenreId_GivenValidId_ReturnsSuccess()
+    {
+        Guid genreId = GenreSeed.Action.Id;
+
+        var response = await HttpClient.GetAsync($"api/genres/{genreId}/games");
+
+        response.EnsureSuccessStatusCode();
+        var games = await HttpHelper.GetModelFromHttpResponseAsync<IEnumerable<Game>>(response);
+        Assert.NotNull(games);
+        var expectedGames = DbContext.Games
+            .Where(game => game.Genres.Select(p => p.Id).Contains(genreId));
+        Assert.Equal(expectedGames.Count(), games.Count());
+    }
+
+    [Fact]
     public async Task Delete_GivenValidId_DeletesGenre()
     {
         Guid id = GenreSeed.GetGenres().First().Id;

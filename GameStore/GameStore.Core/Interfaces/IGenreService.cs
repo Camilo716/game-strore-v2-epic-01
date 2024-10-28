@@ -12,9 +12,9 @@ public interface IGenreService
 
     public Task DeleteAsync(Guid id);
 
-    Task CreateAsync(Genre genre);
+    public Task CreateAsync(Genre genre);
 
-    Task UpdateAsync(Genre genre);
+    public Task UpdateAsync(Genre genre);
 
-    Task<IEnumerable<Genre>> GetByGameKeyAsync(string gameKey);
+    public Task<IEnumerable<Genre>> GetByGameKeyAsync(string gameKey);
 }

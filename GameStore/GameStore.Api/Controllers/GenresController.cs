@@ -7,10 +7,13 @@ namespace GameStore.Api.Controllers;
 
 [Controller]
 [Route("/api/[Controller]")]
-public class GenresController(IGenreService genreService)
+public class GenresController(
+    IGenreService genreService,
+    IGameService gameService)
     : ControllerBase
 {
     private readonly IGenreService _genreService = genreService;
+    private readonly IGameService _gameService = gameService;
 
     [HttpGet]
     [Route("{id}")]
@@ -19,6 +22,14 @@ public class GenresController(IGenreService genreService)
         var genre = await _genreService.GetByIdAsync(id);
         var response = new GenreResponseDto(genre);
         return Ok(response);
+    }
+
+    [HttpGet]
+    [Route("{id}/games")]
+    public async Task<ActionResult<IEnumerable<Game>>> GetGamesByGenreId([FromRoute] Guid id)
+    {
+        var games = await _gameService.GetByGenreIdAsync(id);
+        return Ok(games);
     }
 
     [HttpGet]

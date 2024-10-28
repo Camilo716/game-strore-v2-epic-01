@@ -90,7 +90,6 @@ public class PlatformIntegrationTests : BaseIntegrationTest
 
         response.EnsureSuccessStatusCode();
         var games = await HttpHelper.GetModelFromHttpResponseAsync<IEnumerable<Game>>(response);
-
         Assert.NotNull(games);
         var expectedGames = DbContext.Games
             .Where(game => game.Platforms.Select(p => p.Id).Contains(platformId));

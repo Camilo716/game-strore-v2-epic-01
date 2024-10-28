@@ -60,6 +60,21 @@ public class GameRepositoryTests
     }
 
     [Fact]
+    public async Task GetByGenreId_GivenValidGenreId_ReturnsGameInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        Guid genreId = GenreSeed.Action.Id;
+
+        IEnumerable<Game> games = await unitOfWork.GameRepository.GetByGenreIdAsync(genreId);
+
+        Assert.NotNull(games);
+        Assert.All(
+            games,
+            game => Assert.Contains(genreId, game.Genres.Select(p => p.Id)));
+    }
+
+    [Fact]
     public async Task Insert_GivenValidGame_InsertsGameInDatabase()
     {
         using var dbContext = UnitTestHelper.GetUnitTestDbContext();

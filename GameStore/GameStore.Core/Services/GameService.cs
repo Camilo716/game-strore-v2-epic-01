@@ -50,6 +50,11 @@ public class GameService
         return await _unitOfWork.GameRepository.GetByPlatformIdAsync(platformId);
     }
 
+    public async Task<IEnumerable<Game>> GetByGenreIdAsync(Guid genreId)
+    {
+        return await _unitOfWork.GameRepository.GetByGenreIdAsync(genreId);
+    }
+
     private static void GenerateGameKeyIfNotProvided(Game game)
     {
         if (!string.IsNullOrWhiteSpace(game.Key))
