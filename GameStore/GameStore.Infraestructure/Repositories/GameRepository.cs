@@ -25,13 +25,29 @@ public class GameRepository(GameStoreDbContext dbContext)
     {
         var existingGame = DbSet
             .Include(game => game.Genres)
+            .Include(game => game.Platforms)
             .FirstOrDefault(game => game.Id == entity.Id)
             ?? throw new InvalidOperationException($"Game {entity.Id} was not found");
 
         DbContext.Entry(existingGame).CurrentValues.SetValues(entity);
         UpdateGenreRelationships(entity, existingGame);
+        UpdatePlatformRelationships(entity, existingGame);
 
         base.Update(existingGame);
+    }
+
+    private void UpdatePlatformRelationships(Game entity, Game existingGame)
+    {
+        existingGame.Platforms.Clear();
+
+        foreach (var platform in entity.Platforms)
+        {
+            var trackedPlatform = DbContext.Platforms
+                .Find(platform.Id)
+                ?? platform;
+
+            existingGame.Platforms.Add(trackedPlatform);
+        }
     }
 
     private void UpdateGenreRelationships(Game entity, Game existingGame)
