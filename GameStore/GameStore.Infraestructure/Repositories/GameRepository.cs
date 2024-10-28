@@ -25,10 +25,17 @@ public class GameRepository(GameStoreDbContext dbContext)
     {
         var existingGame = DbSet
             .Include(game => game.Genres)
-            .FirstOrDefault(game => game.Id == entity.Id);
+            .FirstOrDefault(game => game.Id == entity.Id)
+            ?? throw new InvalidOperationException($"Game {entity.Id} was not found");
 
-        DbContext.Entry(existingGame!).CurrentValues.SetValues(entity);
+        DbContext.Entry(existingGame).CurrentValues.SetValues(entity);
+        UpdateGenreRelationships(entity, existingGame);
 
+        base.Update(existingGame);
+    }
+
+    private void UpdateGenreRelationships(Game entity, Game existingGame)
+    {
         existingGame.Genres.Clear();
 
         foreach (var genre in entity.Genres)
@@ -39,7 +46,5 @@ public class GameRepository(GameStoreDbContext dbContext)
 
             existingGame.Genres.Add(trackedGenre);
         }
-
-        base.Update(existingGame);
     }
 }
