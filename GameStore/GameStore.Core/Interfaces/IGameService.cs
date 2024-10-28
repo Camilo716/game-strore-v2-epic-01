@@ -4,6 +4,8 @@ namespace GameStore.Core.Interfaces;
 
 public interface IGameService
 {
+    public Task<Game> GetByIdAsync(Guid id);
+
     public Task<IEnumerable<Game>> GetAllAsync();
 
     public Task CreateAsync(Game game);

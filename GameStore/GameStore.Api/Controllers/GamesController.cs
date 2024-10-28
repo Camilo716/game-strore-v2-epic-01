@@ -31,6 +31,14 @@ public class GamesController(
     }
 
     [HttpGet]
+    [Route("{id}")]
+    public async Task<ActionResult<Game>> GetAsync([FromRoute] Guid id)
+    {
+        var game = await _gameService.GetByIdAsync(id);
+        return Ok(new GameResponseDto(game));
+    }
+
+    [HttpGet]
     [Route("{key}/genres")]
     public async Task<ActionResult<Genre>> GetGenresByGameKey([FromRoute] string key)
     {

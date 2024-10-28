@@ -9,6 +9,19 @@ namespace GameStore.Tests.Core;
 public class GameServiceTest
 {
     [Fact]
+    public async Task GetById_GivenValidId_ReturnsGameModel()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var gameService = new GameService(unitOfWork.Object);
+        Guid id = GameSeed.GearsOfWar.Id;
+
+        var game = await gameService.GetByIdAsync(id);
+
+        Assert.NotNull(game);
+        Assert.Equal(game.Id, id);
+    }
+
+    [Fact]
     public async Task GetAll_ReturnsGamesModels()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
@@ -92,6 +105,9 @@ public class GameServiceTest
 
         mockUnitOfWork.Setup(m => m.GameRepository.GetAllAsync())
             .ReturnsAsync(GameSeed.GetGames());
+
+        mockUnitOfWork.Setup(m => m.GameRepository.GetByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(GameSeed.GearsOfWar);
 
         return mockUnitOfWork;
     }

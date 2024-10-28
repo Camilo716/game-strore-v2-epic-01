@@ -10,6 +10,16 @@ namespace GameStore.Tests.Api;
 public class GameIntegrationTests : BaseIntegrationTest
 {
     [Fact]
+    public async Task GetById_GivenValidId_ReturnsSuccess()
+    {
+        Guid id = GameSeed.GearsOfWar.Id;
+
+        var response = await HttpClient.GetAsync($"api/games/{id}");
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
     public async Task GetAll_WithoutPagination_ReturnsAllGames()
     {
         var response = await HttpClient.GetAsync("api/games");

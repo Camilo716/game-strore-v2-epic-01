@@ -35,6 +35,11 @@ public class GameService
         await _unitOfWork.SaveChangesAsync();
     }
 
+    public async Task<Game> GetByIdAsync(Guid id)
+    {
+        return await _unitOfWork.GameRepository.GetByIdAsync(id);
+    }
+
     private static void GenerateGameKeyIfNotProvided(Game game)
     {
         if (!string.IsNullOrWhiteSpace(game.Key))
