@@ -14,6 +14,14 @@ public class GameRepository(GameStoreDbContext dbContext)
         return await DbSet.FirstOrDefaultAsync(x => x.Key == key);
     }
 
+    public async Task<IEnumerable<Game>> GetByPlatformIdAsync(Guid platformId)
+    {
+        return await DbSet
+            .Include(game => game.Platforms)
+            .Where(game => game.Platforms.Select(p => p.Id).Contains(platformId))
+            .ToListAsync();
+    }
+
     public override async Task InsertAsync(Game entity)
     {
         DbContext.AttachRange(entity.Genres);

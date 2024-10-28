@@ -7,10 +7,13 @@ namespace GameStore.Api.Controllers;
 
 [Controller]
 [Route("/api/[Controller]")]
-public class PlatformsController(IPlatformService platformService)
+public class PlatformsController(
+    IPlatformService platformService,
+    IGameService gameService)
     : ControllerBase
 {
     private readonly IPlatformService _platformService = platformService;
+    private readonly IGameService _gameService = gameService;
 
     [HttpGet]
     [Route("{id}")]
@@ -19,6 +22,15 @@ public class PlatformsController(IPlatformService platformService)
         var platform = await _platformService.GetByIdAsync(id);
 
         return platform is null ? NotFound() : Ok(platform);
+    }
+
+    [HttpGet]
+    [Route("{id}/games")]
+    public async Task<ActionResult<IEnumerable<Game>>> GetGamesByPlatformId([FromRoute] Guid id)
+    {
+        var games = await _gameService.GetByPlatformIdAsync(id);
+
+        return Ok(games);
     }
 
     [HttpGet]

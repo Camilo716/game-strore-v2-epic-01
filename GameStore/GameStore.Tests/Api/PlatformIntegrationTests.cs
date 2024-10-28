@@ -81,6 +81,22 @@ public class PlatformIntegrationTests : BaseIntegrationTest
         response.EnsureSuccessStatusCode();
     }
 
+    [Fact]
+    public async Task GetGamesByPlatformId_GivenValidId_ReturnsSuccess()
+    {
+        Guid platformId = PlatformSeed.Console.Id;
+
+        var response = await HttpClient.GetAsync($"api/platforms/{platformId}/games");
+
+        response.EnsureSuccessStatusCode();
+        var games = await HttpHelper.GetModelFromHttpResponseAsync<IEnumerable<Game>>(response);
+
+        Assert.NotNull(games);
+        var expectedGames = DbContext.Games
+            .Where(game => game.Platforms.Select(p => p.Id).Contains(platformId));
+        Assert.Equal(expectedGames.Count(), games.Count());
+    }
+
     [Theory]
     [ClassData(typeof(InvalidPlatformsPostRequestTestData))]
     public async Task Post_GivenInvalidPlatform_ReturnsBadRequest(PlatformPostRequest invalidPlatformRequest)

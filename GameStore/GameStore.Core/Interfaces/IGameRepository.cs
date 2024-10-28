@@ -10,6 +10,8 @@ public interface IGameRepository
 
     public Task<Game> GetByKeyAsync(string key);
 
+    Task<IEnumerable<Game>> GetByPlatformIdAsync(Guid platformId);
+
     public Task InsertAsync(Game game);
 
     Task DeleteByIdAsync(Guid id);

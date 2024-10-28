@@ -8,11 +8,13 @@ public interface IGameService
 
     public Task<Game> GetByKeyAsync(string key);
 
+    public Task<IEnumerable<Game>> GetByPlatformIdAsync(Guid platformId);
+
     public Task<IEnumerable<Game>> GetAllAsync();
 
     public Task CreateAsync(Game game);
 
     public Task DeleteAsync(Guid id);
 
-    Task UpdateAsync(Game game);
+    public Task UpdateAsync(Game game);
 }

@@ -12,6 +12,7 @@ public class GenreRepository(GameStoreDbContext dbContext)
     public async Task<IEnumerable<Genre>> GetByGameKeyAsync(string gameKey)
     {
         return await DbSet
+            .Include(genre => genre.Games)
             .Where(genre => genre.Games.Select(game => game.Key).Contains(gameKey))
             .ToListAsync();
     }

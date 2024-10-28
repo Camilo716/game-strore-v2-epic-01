@@ -36,12 +36,27 @@ public class GameRepositoryTests
     {
         using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
-        const string key = "GearsOfWar";
+        string key = GameSeed.GearsOfWar.Key;
 
         var game = await unitOfWork.GameRepository.GetByKeyAsync(key);
 
         Assert.NotNull(game);
         Assert.Equal(key, game.Key);
+    }
+
+    [Fact]
+    public async Task GetByPlatformId_GivenValidPlatformId_ReturnsGameInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        Guid platformId = PlatformSeed.Console.Id;
+
+        IEnumerable<Game> games = await unitOfWork.GameRepository.GetByPlatformIdAsync(platformId);
+
+        Assert.NotNull(games);
+        Assert.All(
+            games,
+            game => Assert.Contains(platformId, game.Platforms.Select(p => p.Id)));
     }
 
     [Fact]

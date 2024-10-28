@@ -12,7 +12,8 @@ public class PlatformRepository(GameStoreDbContext dbContext)
     public async Task<IEnumerable<Platform>> GetByGameKeyAsync(string gameKey)
     {
         return await DbSet
-            .Where(p => p.Games.Select(g => g.Id).Contains(p.Id))
+            .Include(platform => platform.Games)
+            .Where(platform => platform.Games.Select(g => g.Key).Contains(gameKey))
             .ToListAsync();
     }
 }

@@ -35,6 +35,18 @@ public class GameServiceTest
     }
 
     [Fact]
+    public async Task GetByPlatformId_GivenValidPlatformId_ReturnsGames()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        var gameService = new GameService(unitOfWork.Object);
+        Guid platformId = PlatformSeed.Console.Id;
+
+        var games = await gameService.GetByPlatformIdAsync(platformId);
+
+        Assert.NotNull(games);
+    }
+
+    [Fact]
     public async Task GetAll_ReturnsGamesModels()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
