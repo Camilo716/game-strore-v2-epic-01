@@ -33,8 +33,10 @@ public class GameRepository(GameStoreDbContext dbContext)
 
         foreach (var genre in entity.Genres)
         {
-            var trackedGenre = DbContext.Genres.Local.FirstOrDefault(g => g.Id == genre.Id) ?? genre;
-            DbContext.Attach(trackedGenre);
+            var trackedGenre = DbContext.Genres
+                .Find(genre.Id)
+                ?? genre;
+
             existingGame.Genres.Add(trackedGenre);
         }
 
