@@ -13,6 +13,18 @@ public class GameStoreDbContext(DbContextOptions options) : DbContext(options)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Game>()
+            .HasIndex(g => g.Key)
+            .IsUnique();
+
+        modelBuilder.Entity<Platform>()
+            .HasIndex(p => p.Type)
+            .IsUnique();
+
+        modelBuilder.Entity<Genre>()
+            .HasIndex(g => g.Name)
+            .IsUnique();
+
         SeedGenres(modelBuilder);
         SeedPlatforms(modelBuilder);
     }
