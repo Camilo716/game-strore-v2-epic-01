@@ -17,7 +17,7 @@ public class GameIntegrationTests : BaseIntegrationTest
         response.EnsureSuccessStatusCode();
         var games = await HttpHelper.GetModelFromHttpResponseAsync<IEnumerable<Game>>(response);
         Assert.NotNull(games);
-        Assert.Equal(games.Count(), GameSeed.GetGames().Count);
+        Assert.Equal(GameSeed.GetGames().Count, games.Count());
     }
 
     [Fact]
