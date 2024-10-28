@@ -11,4 +11,11 @@ public class GamePutRequest
     public List<Guid> Platforms { get; set; } =
     [
     ];
+
+    public bool IsValid()
+    {
+        return Game is not null
+            && Game.Id != Guid.Empty
+            && !string.IsNullOrWhiteSpace(Game.Name);
+    }
 }

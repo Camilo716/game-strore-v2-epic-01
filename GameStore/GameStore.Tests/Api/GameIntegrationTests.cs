@@ -139,4 +139,13 @@ public class GameIntegrationTests : BaseIntegrationTest
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
+
+    [Theory]
+    [ClassData(typeof(InvalidGamesPutRequestTestData))]
+    public async Task Put_GivenInvalidGame_ReturnsBadRequest(GamePutRequest invalidGameRequest)
+    {
+        var response = await HttpClient.PutAsJsonAsync("api/games", invalidGameRequest);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
 }

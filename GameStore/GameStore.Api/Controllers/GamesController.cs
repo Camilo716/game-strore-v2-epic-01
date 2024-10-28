@@ -82,6 +82,11 @@ public class GamesController(
     [HttpPut]
     public async Task<ActionResult> Put([FromBody] GamePutRequest gamePutRequest)
     {
+        if (!gamePutRequest.IsValid())
+        {
+            return BadRequest();
+        }
+
         var game = _mapper.Map<Game>(gamePutRequest);
 
         await _gameService.UpdateAsync(game);
