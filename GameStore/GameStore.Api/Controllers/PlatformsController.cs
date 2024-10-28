@@ -18,16 +18,16 @@ public class PlatformsController(
 
     [HttpGet]
     [Route("{id}")]
-    public async Task<ActionResult<Platform>> GetById([FromRoute] Guid id)
+    public async Task<ActionResult<PlatformResponseDto>> GetById([FromRoute] Guid id)
     {
         var platform = await _platformService.GetByIdAsync(id);
 
-        return platform is null ? NotFound() : Ok(platform);
+        return platform is null ? NotFound() : Ok(new PlatformResponseDto(platform));
     }
 
     [HttpGet]
     [Route("{id}/games")]
-    public async Task<ActionResult<IEnumerable<Game>>> GetGamesByPlatformId([FromRoute] Guid id)
+    public async Task<ActionResult<IEnumerable<GameResponseDto>>> GetGamesByPlatformId([FromRoute] Guid id)
     {
         var games = await _gameService.GetByPlatformIdAsync(id);
         var response = games.Select(g => new GameResponseDto(g));
@@ -35,7 +35,7 @@ public class PlatformsController(
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Platform>>> GetAll()
+    public async Task<ActionResult<IEnumerable<PlatformResponseDto>>> GetAll()
     {
         var platforms = await _platformService.GetAllAsync();
         var response = platforms.Select(p => new PlatformResponseDto(p));

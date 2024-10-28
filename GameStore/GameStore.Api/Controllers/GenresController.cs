@@ -18,7 +18,7 @@ public class GenresController(
 
     [HttpGet]
     [Route("{id}")]
-    public async Task<ActionResult<Genre>> GetById([FromRoute] Guid id)
+    public async Task<ActionResult<GenreResponseDto>> GetById([FromRoute] Guid id)
     {
         var genre = await _genreService.GetByIdAsync(id);
         var response = new GenreResponseDto(genre);
@@ -27,7 +27,7 @@ public class GenresController(
 
     [HttpGet]
     [Route("{id}/games")]
-    public async Task<ActionResult<IEnumerable<Game>>> GetGamesByGenreId([FromRoute] Guid id)
+    public async Task<ActionResult<IEnumerable<GameResponseDto>>> GetGamesByGenreId([FromRoute] Guid id)
     {
         var games = await _gameService.GetByGenreIdAsync(id);
         var response = games.Select(g => new GameResponseDto(g));
@@ -35,7 +35,7 @@ public class GenresController(
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Genre>>> Get()
+    public async Task<ActionResult<IEnumerable<GenreResponseDto>>> Get()
     {
         var genres = await _genreService.GetAllAsync();
         var response = genres.Select(g => new GenreResponseDto(g));
@@ -44,7 +44,7 @@ public class GenresController(
 
     [HttpGet]
     [Route("{parentId}/genres")]
-    public async Task<ActionResult<IEnumerable<Genre>>> GetByParentId([FromRoute] Guid parentId)
+    public async Task<ActionResult<IEnumerable<GenreResponseDto>>> GetByParentId([FromRoute] Guid parentId)
     {
         var childrenGenres = await _genreService.GetByParentIdAsync(parentId);
         var response = childrenGenres.Select(g => new GenreResponseDto(g));
