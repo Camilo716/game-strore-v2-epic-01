@@ -38,6 +38,8 @@ public class Startup(IConfiguration configuration)
             app.UseSwaggerUI();
         }
 
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
+
         app.UseHttpsRedirection();
 
         app.UseRouting();
