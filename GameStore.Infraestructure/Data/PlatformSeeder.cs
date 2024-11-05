@@ -7,11 +7,10 @@ public static class PlatformSeeder
 {
     public static void SeedPlatforms(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Platform>().HasData([
-            new() { Type = "Mobile" },
-            new() { Type = "Browser" },
-            new() { Type = "Desktop" },
-            new() { Type = "Console" },
-        ]);
+        modelBuilder.Entity<Platform>().HasData(
+            new Platform { Type = "Mobile" },
+            new Platform { Type = "Browser" },
+            new Platform { Type = "Desktop" },
+            new Platform { Type = "Console" });
     }
 }
