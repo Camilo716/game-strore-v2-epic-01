@@ -79,6 +79,8 @@ public class GameRepositoryTests
     {
         using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
+        Genre? genre = await dbContext.Genres.FindAsync(GenreSeed.Action.Id)
+            ?? throw new InvalidOperationException("Genre not found in database.");
 
         var validGame = new Game()
         {
@@ -86,7 +88,7 @@ public class GameRepositoryTests
             Key = "Halo3",
             Genres =
             [
-                await dbContext.Genres.FindAsync(GenreSeed.Action.Id)
+                genre
             ],
         };
 
