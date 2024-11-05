@@ -7,52 +7,52 @@ namespace GameStore.Core.Services;
 public class GameService
     (IUnitOfWork unitOfWork) : IGameService
 {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private IUnitOfWork UnitOfWork => unitOfWork;
 
     public async Task CreateAsync(Game game)
     {
         GenerateGameKeyIfNotProvided(game);
 
-        await _unitOfWork.GameRepository.InsertAsync(game);
-        await _unitOfWork.SaveChangesAsync();
+        await UnitOfWork.GameRepository.InsertAsync(game);
+        await UnitOfWork.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Game>> GetAllAsync()
     {
-        var games = await _unitOfWork.GameRepository.GetAllAsync();
+        var games = await UnitOfWork.GameRepository.GetAllAsync();
         return games;
     }
 
     public async Task DeleteAsync(Guid id)
     {
-        await _unitOfWork.GameRepository.DeleteByIdAsync(id);
-        await _unitOfWork.SaveChangesAsync();
+        await UnitOfWork.GameRepository.DeleteByIdAsync(id);
+        await UnitOfWork.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Game game)
     {
-        _unitOfWork.GameRepository.Update(game);
-        await _unitOfWork.SaveChangesAsync();
+        UnitOfWork.GameRepository.Update(game);
+        await UnitOfWork.SaveChangesAsync();
     }
 
     public async Task<Game> GetByIdAsync(Guid id)
     {
-        return await _unitOfWork.GameRepository.GetByIdAsync(id);
+        return await UnitOfWork.GameRepository.GetByIdAsync(id);
     }
 
     public async Task<Game> GetByKeyAsync(string key)
     {
-        return await _unitOfWork.GameRepository.GetByKeyAsync(key);
+        return await UnitOfWork.GameRepository.GetByKeyAsync(key);
     }
 
     public async Task<IEnumerable<Game>> GetByPlatformIdAsync(Guid platformId)
     {
-        return await _unitOfWork.GameRepository.GetByPlatformIdAsync(platformId);
+        return await UnitOfWork.GameRepository.GetByPlatformIdAsync(platformId);
     }
 
     public async Task<IEnumerable<Game>> GetByGenreIdAsync(Guid genreId)
     {
-        return await _unitOfWork.GameRepository.GetByGenreIdAsync(genreId);
+        return await UnitOfWork.GameRepository.GetByGenreIdAsync(genreId);
     }
 
     private static void GenerateGameKeyIfNotProvided(Game game)

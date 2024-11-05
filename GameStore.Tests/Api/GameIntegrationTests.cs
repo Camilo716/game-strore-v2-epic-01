@@ -16,6 +16,7 @@ public class GameIntegrationTests : BaseIntegrationTest
 
         var response = await HttpClient.GetAsync($"api/games/find/{id}");
 
+        Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
 
@@ -26,6 +27,7 @@ public class GameIntegrationTests : BaseIntegrationTest
 
         var response = await HttpClient.GetAsync($"api/games/{key}");
 
+        Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
 
@@ -128,6 +130,7 @@ public class GameIntegrationTests : BaseIntegrationTest
 
         var response = await HttpClient.PutAsJsonAsync("api/games", request);
 
+        Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
 

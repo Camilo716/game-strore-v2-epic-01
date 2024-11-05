@@ -7,11 +7,11 @@ namespace GameStore.Core.Services;
 public class GameTextFileService(IUnitOfWork unitOfWork)
     : IGameFileService
 {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private IUnitOfWork UnitOfWork => unitOfWork;
 
     public async Task<GameFile> GetByKeyAsync(string key)
     {
-        var game = await _unitOfWork.GameRepository.GetByKeyAsync(key);
+        var game = await UnitOfWork.GameRepository.GetByKeyAsync(key);
         byte[] content = JsonSerializer.SerializeToUtf8Bytes(game);
 
         return new GameFile()

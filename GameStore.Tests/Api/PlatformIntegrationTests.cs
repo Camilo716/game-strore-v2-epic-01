@@ -16,6 +16,7 @@ public class PlatformIntegrationTests : BaseIntegrationTest
 
         var response = await HttpClient.GetAsync($"api/platforms/{id}");
 
+        Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
 
@@ -78,6 +79,7 @@ public class PlatformIntegrationTests : BaseIntegrationTest
 
         var response = await HttpClient.PutAsJsonAsync("api/platforms", request);
 
+        Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
 

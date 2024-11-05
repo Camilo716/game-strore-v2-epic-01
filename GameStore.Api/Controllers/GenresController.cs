@@ -13,14 +13,15 @@ public class GenresController(
     IGameService gameService)
     : ControllerBase
 {
-    private readonly IGenreService _genreService = genreService;
-    private readonly IGameService _gameService = gameService;
+    private IGenreService GenreService => genreService;
+
+    private IGameService GameService => gameService;
 
     [HttpGet]
     [Route("{id}")]
     public async Task<ActionResult<GenreResponseDto>> GetById([FromRoute] Guid id)
     {
-        var genre = await _genreService.GetByIdAsync(id);
+        var genre = await GenreService.GetByIdAsync(id);
         var response = new GenreResponseDto(genre);
         return Ok(response);
     }
@@ -29,7 +30,7 @@ public class GenresController(
     [Route("{id}/games")]
     public async Task<ActionResult<IEnumerable<GameResponseDto>>> GetGamesByGenreId([FromRoute] Guid id)
     {
-        var games = await _gameService.GetByGenreIdAsync(id);
+        var games = await GameService.GetByGenreIdAsync(id);
         var response = games.Select(g => new GameResponseDto(g));
         return Ok(response);
     }
@@ -37,7 +38,7 @@ public class GenresController(
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GenreResponseDto>>> Get()
     {
-        var genres = await _genreService.GetAllAsync();
+        var genres = await GenreService.GetAllAsync();
         var response = genres.Select(g => new GenreResponseDto(g));
         return Ok(response);
     }
@@ -46,7 +47,7 @@ public class GenresController(
     [Route("{parentId}/genres")]
     public async Task<ActionResult<IEnumerable<GenreResponseDto>>> GetByParentId([FromRoute] Guid parentId)
     {
-        var childrenGenres = await _genreService.GetByParentIdAsync(parentId);
+        var childrenGenres = await GenreService.GetByParentIdAsync(parentId);
         var response = childrenGenres.Select(g => new GenreResponseDto(g));
         return Ok(response);
     }
@@ -55,7 +56,7 @@ public class GenresController(
     [Route("{id}")]
     public async Task<ActionResult> Delete([FromRoute] Guid id)
     {
-        await _genreService.DeleteAsync(id);
+        await GenreService.DeleteAsync(id);
         return NoContent();
     }
 
@@ -72,7 +73,7 @@ public class GenresController(
             Name = genrePostDto.Genre.Name,
         };
 
-        await _genreService.CreateAsync(genre);
+        await GenreService.CreateAsync(genre);
 
         return CreatedAtAction(
             actionName: nameof(GetById),
@@ -94,7 +95,7 @@ public class GenresController(
             Name = genrePutDto.Genre.Name,
         };
 
-        await _genreService.UpdateAsync(genre);
+        await GenreService.UpdateAsync(genre);
 
         return Ok();
     }

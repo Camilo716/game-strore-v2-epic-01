@@ -4,13 +4,13 @@ namespace GameStore.Api.Dtos.GameDtos;
 
 public class GameResponseDto(Game game)
 {
-    private readonly Game _game = game;
+    public Guid Id => Game.Id;
 
-    public Guid Id => _game.Id;
+    public string Description => Game.Description;
 
-    public string Description => _game.Description;
+    public string Key => Game.Key;
 
-    public string Key => _game.Key;
+    public string Name => Game.Name;
 
-    public string Name => _game.Name;
+    private Game Game => game;
 }

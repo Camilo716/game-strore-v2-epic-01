@@ -5,14 +5,15 @@ namespace GameStore.Api;
 
 public class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
 {
-    private readonly RequestDelegate _next = next;
-    private readonly ILogger _logger = logger;
+    private RequestDelegate Next => next;
+
+    private ILogger Logger => logger;
 
     public async Task Invoke(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await Next(context);
         }
         catch (Exception ex)
         {
@@ -22,7 +23,7 @@ public class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionH
 
     private Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
-        _logger.LogError(ex, "An unexpected error occurred.");
+        Logger.LogError(ex, "An unexpected error occurred.");
 
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         context.Response.ContentType = "application/json";

@@ -4,9 +4,9 @@ namespace GameStore.Api.Dtos.PlatformDtos;
 
 public class PlatformResponseDto(Platform platform)
 {
-    private readonly Platform _platform = platform;
+    public Guid Id => Platform.Id;
 
-    public Guid Id => _platform.Id;
+    public string Type => Platform.Type;
 
-    public string Type => _platform.Type;
+    private Platform Platform => platform;
 }

@@ -5,39 +5,39 @@ namespace GameStore.Core.Services;
 
 public class PlatformService(IUnitOfWork unitOfWork) : IPlatformService
 {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private IUnitOfWork UnitOfWork => unitOfWork;
 
     public async Task<IEnumerable<Platform>> GetAllAsync()
     {
-        return await _unitOfWork.PlatformRepository.GetAllAsync();
+        return await UnitOfWork.PlatformRepository.GetAllAsync();
     }
 
     public async Task<Platform> GetByIdAsync(Guid id)
     {
-        return await _unitOfWork.PlatformRepository.GetByIdAsync(id);
+        return await UnitOfWork.PlatformRepository.GetByIdAsync(id);
     }
 
     public async Task DeleteAsync(Guid id)
     {
-        await _unitOfWork.PlatformRepository.DeleteByIdAsync(id);
-        await _unitOfWork.SaveChangesAsync();
+        await UnitOfWork.PlatformRepository.DeleteByIdAsync(id);
+        await UnitOfWork.SaveChangesAsync();
     }
 
     public async Task CreateAsync(Platform platform)
     {
-        await _unitOfWork.PlatformRepository.InsertAsync(platform);
-        await _unitOfWork.SaveChangesAsync();
+        await UnitOfWork.PlatformRepository.InsertAsync(platform);
+        await UnitOfWork.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Platform platform)
     {
-        _unitOfWork.PlatformRepository.Update(platform);
-        await _unitOfWork.SaveChangesAsync();
+        UnitOfWork.PlatformRepository.Update(platform);
+        await UnitOfWork.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Platform>> GetByGameKeyAsync(string gameKey)
     {
-        var platforms = await _unitOfWork.PlatformRepository.GetByGameKeyAsync(gameKey);
+        var platforms = await UnitOfWork.PlatformRepository.GetByGameKeyAsync(gameKey);
         return platforms;
     }
 }

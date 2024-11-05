@@ -6,44 +6,44 @@ namespace GameStore.Core.Services;
 public class GenreService(IUnitOfWork unitOfWork)
     : IGenreService
 {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private IUnitOfWork UnitOfWork => unitOfWork;
 
     public async Task<Genre> GetByIdAsync(Guid id)
     {
-        return await _unitOfWork.GenreRepository.GetByIdAsync(id);
+        return await UnitOfWork.GenreRepository.GetByIdAsync(id);
     }
 
     public async Task<IEnumerable<Genre>> GetAllAsync()
     {
-        return await _unitOfWork.GenreRepository.GetAllAsync();
+        return await UnitOfWork.GenreRepository.GetAllAsync();
     }
 
     public async Task<IEnumerable<Genre>> GetByParentIdAsync(Guid parentId)
     {
-        return await _unitOfWork.GenreRepository.GetByParentIdAsync(parentId);
+        return await UnitOfWork.GenreRepository.GetByParentIdAsync(parentId);
     }
 
     public async Task DeleteAsync(Guid id)
     {
-        await _unitOfWork.GenreRepository.DeleteByIdAsync(id);
-        await _unitOfWork.SaveChangesAsync();
+        await UnitOfWork.GenreRepository.DeleteByIdAsync(id);
+        await UnitOfWork.SaveChangesAsync();
     }
 
     public async Task CreateAsync(Genre genre)
     {
-        await _unitOfWork.GenreRepository.InsertAsync(genre);
-        await _unitOfWork.SaveChangesAsync();
+        await UnitOfWork.GenreRepository.InsertAsync(genre);
+        await UnitOfWork.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Genre genre)
     {
-        _unitOfWork.GenreRepository.Update(genre);
-        await _unitOfWork.SaveChangesAsync();
+        UnitOfWork.GenreRepository.Update(genre);
+        await UnitOfWork.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Genre>> GetByGameKeyAsync(string gameKey)
     {
-        var genres = await _unitOfWork.GenreRepository.GetByGameKeyAsync(gameKey);
+        var genres = await UnitOfWork.GenreRepository.GetByGameKeyAsync(gameKey);
         return genres;
     }
 }

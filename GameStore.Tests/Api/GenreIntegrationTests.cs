@@ -16,6 +16,7 @@ public class GenreIntegrationTests : BaseIntegrationTest
 
         var response = await HttpClient.GetAsync($"api/genres/{id}");
 
+        Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
 
@@ -37,6 +38,7 @@ public class GenreIntegrationTests : BaseIntegrationTest
 
         var response = await HttpClient.GetAsync($"api/genres/{parentId}/genres");
 
+        Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
 
@@ -96,6 +98,7 @@ public class GenreIntegrationTests : BaseIntegrationTest
 
         var response = await HttpClient.PutAsJsonAsync("api/genres", request);
 
+        Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
 

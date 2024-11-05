@@ -13,14 +13,15 @@ public class PlatformsController(
     IGameService gameService)
     : ControllerBase
 {
-    private readonly IPlatformService _platformService = platformService;
-    private readonly IGameService _gameService = gameService;
+    private IPlatformService PlatformService => platformService;
+
+    private IGameService GameService => gameService;
 
     [HttpGet]
     [Route("{id}")]
     public async Task<ActionResult<PlatformResponseDto>> GetById([FromRoute] Guid id)
     {
-        var platform = await _platformService.GetByIdAsync(id);
+        var platform = await PlatformService.GetByIdAsync(id);
 
         return platform is null ? NotFound() : Ok(new PlatformResponseDto(platform));
     }
@@ -29,7 +30,7 @@ public class PlatformsController(
     [Route("{id}/games")]
     public async Task<ActionResult<IEnumerable<GameResponseDto>>> GetGamesByPlatformId([FromRoute] Guid id)
     {
-        var games = await _gameService.GetByPlatformIdAsync(id);
+        var games = await GameService.GetByPlatformIdAsync(id);
         var response = games.Select(g => new GameResponseDto(g));
         return Ok(response);
     }
@@ -37,7 +38,7 @@ public class PlatformsController(
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PlatformResponseDto>>> GetAll()
     {
-        var platforms = await _platformService.GetAllAsync();
+        var platforms = await PlatformService.GetAllAsync();
         var response = platforms.Select(p => new PlatformResponseDto(p));
         return Ok(response);
     }
@@ -46,7 +47,7 @@ public class PlatformsController(
     [Route("{id}")]
     public async Task<ActionResult> Delete([FromRoute] Guid id)
     {
-        await _platformService.DeleteAsync(id);
+        await PlatformService.DeleteAsync(id);
 
         return NoContent();
     }
@@ -64,9 +65,9 @@ public class PlatformsController(
             Type = platformCreationDto.Platform.Type,
         };
 
-        await _platformService.CreateAsync(platform);
+        await PlatformService.CreateAsync(platform);
 
-        var createdPlatform = await _platformService.GetByIdAsync(platform.Id);
+        var createdPlatform = await PlatformService.GetByIdAsync(platform.Id);
         return CreatedAtAction(nameof(GetById), new { id = createdPlatform.Id }, createdPlatform);
     }
 
@@ -84,7 +85,7 @@ public class PlatformsController(
             Type = platformUpdateDto.Platform.Type,
         };
 
-        await _platformService.UpdateAsync(platform);
+        await PlatformService.UpdateAsync(platform);
 
         return Ok();
     }

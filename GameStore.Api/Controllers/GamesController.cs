@@ -18,16 +18,20 @@ public class GamesController(
     IPlatformService platformService)
     : ControllerBase
 {
-    private readonly IMapper _mapper = mapper;
-    private readonly IGameService _gameService = gameService;
-    private readonly IGameFileService _gameFileService = gameFileService;
-    private readonly IGenreService _genreService = genreService;
-    private readonly IPlatformService _platformService = platformService;
+    private IMapper Mapper => mapper;
+
+    private IGameService GameService => gameService;
+
+    private IGameFileService GameFileService => gameFileService;
+
+    private IGenreService GenreService => genreService;
+
+    private IPlatformService PlatformService => platformService;
 
     [HttpGet]
     public async Task<ActionResult<GameResponseDto>> Get()
     {
-        var games = await _gameService.GetAllAsync();
+        var games = await GameService.GetAllAsync();
         var response = games.Select(g => new GameResponseDto(g));
         return Ok(response);
     }
@@ -36,7 +40,7 @@ public class GamesController(
     [Route("find/{id}")]
     public async Task<ActionResult<GameResponseDto>> GetById([FromRoute] Guid id)
     {
-        var game = await _gameService.GetByIdAsync(id);
+        var game = await GameService.GetByIdAsync(id);
         return Ok(new GameResponseDto(game));
     }
 
@@ -44,7 +48,7 @@ public class GamesController(
     [Route("{key}")]
     public async Task<ActionResult<GameResponseDto>> GetByKey([FromRoute] string key)
     {
-        var game = await _gameService.GetByKeyAsync(key);
+        var game = await GameService.GetByKeyAsync(key);
         return Ok(new GameResponseDto(game));
     }
 
@@ -52,7 +56,7 @@ public class GamesController(
     [Route("{key}/genres")]
     public async Task<ActionResult<GenreResponseDto>> GetGenresByGameKey([FromRoute] string key)
     {
-        var genres = await _genreService.GetByGameKeyAsync(key);
+        var genres = await GenreService.GetByGameKeyAsync(key);
         var response = genres.Select(g => new GenreResponseDto(g));
         return Ok(response);
     }
@@ -61,7 +65,7 @@ public class GamesController(
     [Route("{key}/platforms")]
     public async Task<ActionResult<PlatformResponseDto>> GetPlatformsByGameKey([FromRoute] string key)
     {
-        var platforms = await _platformService.GetByGameKeyAsync(key);
+        var platforms = await PlatformService.GetByGameKeyAsync(key);
         var response = platforms.Select(p => new PlatformResponseDto(p));
         return Ok(response);
     }
@@ -69,9 +73,9 @@ public class GamesController(
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] GamePostRequest gamePostDto)
     {
-        var game = _mapper.Map<Game>(gamePostDto);
+        var game = Mapper.Map<Game>(gamePostDto);
 
-        await _gameService.CreateAsync(game);
+        await GameService.CreateAsync(game);
 
         return CreatedAtAction(
             actionName: nameof(GetById),
@@ -87,9 +91,9 @@ public class GamesController(
             return BadRequest();
         }
 
-        var game = _mapper.Map<Game>(gamePutRequest);
+        var game = Mapper.Map<Game>(gamePutRequest);
 
-        await _gameService.UpdateAsync(game);
+        await GameService.UpdateAsync(game);
 
         return Ok();
     }
@@ -98,7 +102,7 @@ public class GamesController(
     [Route("{id}")]
     public async Task<ActionResult> Delete([FromRoute] Guid id)
     {
-        await _gameService.DeleteAsync(id);
+        await GameService.DeleteAsync(id);
         return NoContent();
     }
 
@@ -106,7 +110,7 @@ public class GamesController(
     [Route("{key}/file")]
     public async Task<ActionResult> DownloadGame([FromRoute] string key)
     {
-        var gameFile = await _gameFileService.GetByKeyAsync(key);
+        var gameFile = await GameFileService.GetByKeyAsync(key);
 
         return File(gameFile.Content, gameFile.ContentType, gameFile.FileName);
     }

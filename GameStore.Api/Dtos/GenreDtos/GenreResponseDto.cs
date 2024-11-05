@@ -4,11 +4,11 @@ namespace GameStore.Api.Dtos.GenreDtos;
 
 public class GenreResponseDto(Genre genre)
 {
-    private readonly Genre _genre = genre;
+    public Guid Id => Genre.Id;
 
-    public Guid Id => _genre.Id;
+    public string Name => Genre.Name;
 
-    public string Name => _genre.Name;
+    public Guid? ParentGenreId => Genre.ParentGenreId;
 
-    public Guid? ParentGenreId => _genre.ParentGenreId;
+    private Genre Genre => genre;
 }

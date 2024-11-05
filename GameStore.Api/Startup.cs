@@ -7,7 +7,7 @@ using GameStore.Infraestructure.Data;
 namespace GameStore.Api;
 public class Startup(IConfiguration configuration)
 {
-    public IConfiguration Configuration { get; } = configuration;
+    public IConfiguration Configuration => configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {

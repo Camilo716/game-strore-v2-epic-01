@@ -5,8 +5,6 @@ namespace GameStore.Infraestructure.Data;
 
 public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
 {
-    private readonly GameStoreDbContext _dbContext = dbContext;
-
     private IPlatformRepository _platformRepository;
     private IGenreRepository _genreRepository;
     private IGameRepository _gameRepository;
@@ -15,7 +13,7 @@ public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
     {
         get
         {
-            _platformRepository ??= new PlatformRepository(_dbContext);
+            _platformRepository ??= new PlatformRepository(DbContext);
             return _platformRepository;
         }
     }
@@ -24,7 +22,7 @@ public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
     {
         get
         {
-            _genreRepository ??= new GenreRepository(_dbContext);
+            _genreRepository ??= new GenreRepository(DbContext);
             return _genreRepository;
         }
     }
@@ -33,13 +31,15 @@ public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
     {
         get
         {
-            _gameRepository ??= new GameRepository(_dbContext);
+            _gameRepository ??= new GameRepository(DbContext);
             return _gameRepository;
         }
     }
 
+    private GameStoreDbContext DbContext => dbContext;
+
     public async Task SaveChangesAsync()
     {
-        await _dbContext.SaveChangesAsync();
+        await DbContext.SaveChangesAsync();
     }
 }
